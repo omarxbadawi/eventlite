@@ -19,16 +19,20 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class Security extends WebSecurityConfigurerAdapter {
 
 	public static final String ADMIN_ROLE = "ADMINISTRATOR";
+	public static final String ORGANIZER_ROLE = "ORGANIZER";
 
 	// List the mappings/methods for which no authorisation is required.
 	// By default we allow all GETs and full access to the H2 console.
 	private static final RequestMatcher[] NO_AUTH = { new AntPathRequestMatcher("/webjars/**", "GET"),
 			new AntPathRequestMatcher("/**", "GET"), new AntPathRequestMatcher("/h2-console/**") };
 
+	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"),
+			new AntPathRequestMatcher("/events/{id:[\\d]+}", "PATCH"), new AntPathRequestMatcher("/events/{id:[\\d]+}", "DELETE") };
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// By default, all requests are authenticated except our specific list.
-		http.authorizeRequests().requestMatchers(NO_AUTH).permitAll().anyRequest().hasRole(ADMIN_ROLE);
+		http.authorizeRequests().requestMatchers(NO_AUTH).permitAll().requestMatchers(ORGANIZER_AUTH).hasRole(ORGANIZER_ROLE).anyRequest().hasRole(ADMIN_ROLE);
 
 		// Use form login/logout for the Web.
 		http.formLogin().loginPage("/sign-in").permitAll();
@@ -55,7 +59,7 @@ public class Security extends WebSecurityConfigurerAdapter {
 		UserDetails markel = User.withUsername("Markel").password(encoder.encode("Vigo")).roles(ADMIN_ROLE).build();
 		UserDetails mustafa = User.withUsername("Mustafa").password(encoder.encode("Mustafa")).roles(ADMIN_ROLE)
 				.build();
-		UserDetails tom = User.withUsername("Tom").password(encoder.encode("Carroll")).roles(ADMIN_ROLE).build();
+		UserDetails tom = User.withUsername("Tom").password(encoder.encode("Carroll")).roles(ORGANIZER_ROLE).build();
 
 		return new InMemoryUserDetailsManager(rob, caroline, markel, mustafa, tom);
 	}
