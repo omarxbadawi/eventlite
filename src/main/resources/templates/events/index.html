@@ -20,12 +20,14 @@
       </thead>
       <tbody>
         <tr th:each="e : ${events}">
-          <td th:text="${e.name}">My Event</td>
+          <td>
+            <a th:href="@{/events/{num}(num=${e.id})}" th:text="${e.name}">My Event</a>
+          </td>
           <td th:text="${e.venue.name}">Event venue</td>
           <td th:text="${{e.date}}">Event date</td>
           <td th:text="${{e.time}}">Event time</td>
            <td>
-            <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete" sec:authorize="isAuthenticated()">
+            <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete">
               <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
             </form>
           </td>         

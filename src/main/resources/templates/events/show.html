@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>An event</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Event</h1>
+
+    <blockquote>
+        <p th:text="${event}">Hello, World!</p>
+    </blockquote>
+
+    <form th:action="@{/greetings/{num}(num=${id})}" th:method="delete">
+        <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+    </form>
+</div>
+</body>
+</html>
