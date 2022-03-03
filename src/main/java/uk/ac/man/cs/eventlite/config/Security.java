@@ -27,12 +27,14 @@ public class Security extends WebSecurityConfigurerAdapter {
 			new AntPathRequestMatcher("/**", "GET"), new AntPathRequestMatcher("/h2-console/**") };
 
 	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"),
-			new AntPathRequestMatcher("/events/{id:[\\d]+}", "PATCH"), new AntPathRequestMatcher("/events/{id:[\\d]+}", "DELETE") };
-	
+			new AntPathRequestMatcher("/events/{id:[\\d]+}") };
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// By default, all requests are authenticated except our specific list.
-		http.authorizeRequests().requestMatchers(NO_AUTH).permitAll().requestMatchers(ORGANIZER_AUTH).hasRole(ORGANIZER_ROLE).anyRequest().hasRole(ADMIN_ROLE);
+		http.authorizeRequests().requestMatchers(NO_AUTH).permitAll();
+		http.authorizeRequests().requestMatchers(ORGANIZER_AUTH).hasRole(ORGANIZER_ROLE);
+		http.authorizeRequests().anyRequest().hasRole(ADMIN_ROLE);
 
 		// Use form login/logout for the Web.
 		http.formLogin().loginPage("/sign-in").permitAll();
