@@ -9,4 +9,8 @@ public interface EventService {
 	public Iterable<Event> findAll();
 	
 	public Event save(Event event);
+
+	void deleteById(long id);
+
+	boolean existsById(long id);
 }
