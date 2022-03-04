@@ -60,6 +60,7 @@ public class InitialDataLoader {
 			Event event1 = new Event();
 			event1.setId(1);
 			event1.setName("Event 1");
+			event1.setDescription("This is the best event ever");
 			event1.setVenue(venue);
 			event1.setTime(LocalTime.now());
 			event1.setDate(LocalDate.now());
@@ -67,6 +68,7 @@ public class InitialDataLoader {
 			Event event2 = new Event();
 			event2.setId(2);
 			event2.setName("Event 2");
+			event2.setDescription("This is the second best event ever");
 			event2.setVenue(venue2);
 			event2.setTime(LocalTime.now().plusHours(1));
 			event2.setDate(LocalDate.now().plusDays(1));
@@ -74,6 +76,7 @@ public class InitialDataLoader {
 			Event event3 = new Event();
 			event3.setId(3);
 			event3.setName("Event 3");
+			event3.setDescription("This is the third best event ever");
 			event3.setVenue(venue3);
 			event3.setTime(LocalTime.now().plusHours(2));
 			event3.setDate(LocalDate.now().plusDays(2));

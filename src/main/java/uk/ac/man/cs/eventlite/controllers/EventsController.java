@@ -28,17 +28,11 @@ public class EventsController {
 		return "events/not_found";
 	}
 
-//	@GetMapping("/{id}")
-//	public String getEvent(@PathVariable("id") long id, Model model) {
-//
-//		throw new EventNotFoundException(id);
-//	}
-
 	@GetMapping("/{id}")
 	public String getEvent(@PathVariable("id") long id, Model model) {
 
 		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-		model.addAttribute("event", event.getName());
+		model.addAttribute("event", event);
 
 		return "events/show";
 	}

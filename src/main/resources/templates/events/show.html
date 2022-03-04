@@ -9,10 +9,14 @@
     <h1>Event</h1>
 
     <blockquote>
-        <p th:text="${event}">Hello, World!</p>
+        <p th:text="${event.name}">Hello, World!</p>
     </blockquote>
 
-    <form th:action="@{/greetings/{num}(num=${id})}" th:method="delete">
+    <p th:text="${event.description}">Lorem ipsum</p>
+    <td th:text="${event.venue.name}">Event venue</td>
+    <td th:text="${{event.date}}">Event date</td>
+    <td th:text="${{event.time}}">Event time</td>
+    <form th:action="@{/events/{num}(num=${id})}" th:method="delete">
         <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
         <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
     </form>
