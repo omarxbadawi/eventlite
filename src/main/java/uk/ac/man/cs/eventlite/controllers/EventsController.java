@@ -1,10 +1,5 @@
 package uk.ac.man.cs.eventlite.controllers;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,31 +53,6 @@ public class EventsController {
 		return "events/show";
 	}
 	
-	@PatchMapping("/{id}")
-	public String updateEvent(@PathVariable("id") long id,
-        @RequestParam("name") String name,
-        @RequestParam("description") String description,
-        @RequestParam("date") String date,
-        @RequestParam("time") String time,
-        @RequestParam("venue") String venueId){
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		DateTimeFormatter time_formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
-
-        LocalDate localDate = LocalDate.parse(date,formatter);
-        LocalTime localTime = LocalTime.parse(time,time_formatter);
-        
-		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-		Venue venue = venueService.findById(Long.parseLong(venueId)).orElseThrow(() -> new EventNotFoundException(id));
-
-		event.setName(name);
-		event.setDescription(description);
-		event.setDate(localDate);
-		event.setTime(localTime);
-		event.setVenue(venue);
-		
-		return venueId;
-}
 	@GetMapping
 	public String getAllEvents(Model model) {
 
@@ -99,6 +69,7 @@ public class EventsController {
 		eventService.deleteById(id);
 		return "redirect:/events";
 	}
+
 
 	@GetMapping("/search")
 	public String searchEventByName(
@@ -131,6 +102,34 @@ public class EventsController {
 
         eventService.save(event);
         redirectAttrs.addFlashAttribute("ok_message", "Added new event");
+        
+        return "redirect:/events";
+    }
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+	public String updateEventPage(@PathVariable("id") long id, Model model){
+		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
+		model.addAttribute("event", event);
+		model.addAttribute("venues", venueService.findAll());
+		return "events/update/update";
+	}
+    
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String updateEvent(@PathVariable("id") long id, @RequestBody @Valid @ModelAttribute Event event, BindingResult errors, Model model, RedirectAttributes redirectAttrs) {
+        if (errors.hasErrors()) {
+            model.addAttribute("event", event);
+            model.addAttribute("venues", venueService.findAll());
+            return "events/update/update";
+        }
+        
+		Event eventToUpdate = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
+
+        eventToUpdate.setName(event.getName());
+        eventToUpdate.setDescription(event.getDescription());
+        eventToUpdate.setDate(event.getDate());
+        eventToUpdate.setTime(event.getTime());
+        eventToUpdate.setVenue(event.getVenue());
+        eventService.update(eventToUpdate);
+        redirectAttrs.addFlashAttribute("ok_message", "Event updated");
         
         return "redirect:/events";
     }

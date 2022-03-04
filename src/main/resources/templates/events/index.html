@@ -19,6 +19,8 @@
           <th><i class="fas fa-map-marker-alt"></i> Venue</th>
           <th><i class="fas fa-calendar"></i> Date</th>
           <th><i class="fas fa-clock"></i> Time</th>
+          <th><i class="fas fa-trash"></i> Delete</th>
+          <th><i class="fas fa-edit"></i> Update</th>
         </tr>
       </thead>
       <tbody>
@@ -33,7 +35,12 @@
             <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete">
               <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
             </form>
-          </td>         
+          </td>    
+          <td>
+            <form th:action="@{/events/update/{num}(num=${e.id})}" th:method="get">
+              <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
+            </form>
+          </td>      
         </tr>
       </tbody>
     </table>

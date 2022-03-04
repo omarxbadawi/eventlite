@@ -54,6 +54,12 @@ public class EventsControllerApi {
 		Event greeting = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
 		return eventAssembler.toModel(greeting);
 	}
+	
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+	public EntityModel<Event> updateEventPage(@PathVariable("id") long id) {
+		Event greeting = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
+		return eventAssembler.toModel(greeting);
+	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Event>> getAllEvents() {
