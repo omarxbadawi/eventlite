@@ -23,12 +23,20 @@ public class Security extends WebSecurityConfigurerAdapter {
 
 	// List the mappings/methods for which no authorisation is required.
 	// By default we allow all GETs and full access to the H2 console.
+//	private static final RequestMatcher[] NO_AUTH = { new AntPathRequestMatcher("/webjars/**", "GET"),
+//			new AntPathRequestMatcher("/events"), new AntPathRequestMatcher("/events/{id:[\\d]+}", "GET"),
+//			new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/events/search/**", "GET")};
+//
+//	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"), new AntPathRequestMatcher("/events/new"),
+//			new AntPathRequestMatcher("/events/{id:[\\d]+}", "POST"), new AntPathRequestMatcher("/events/update/**")};
+
 	private static final RequestMatcher[] NO_AUTH = { new AntPathRequestMatcher("/webjars/**", "GET"),
 			new AntPathRequestMatcher("/**", "GET"), new AntPathRequestMatcher("/h2-console/**"),
 			new AntPathRequestMatcher("/events/search", "GET")};
 
 	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"),
-			new AntPathRequestMatcher("/events/{id:[\\d]+}"), new AntPathRequestMatcher("/events/update/{id:[\\d]+}", "POST")};
+			new AntPathRequestMatcher("/events/{id:[\\d]+}"), new AntPathRequestMatcher("/events/update/{id:[\\d]+}"), 
+			new AntPathRequestMatcher("/events/new")};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

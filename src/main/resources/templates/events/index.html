@@ -19,8 +19,8 @@
           <th><i class="fas fa-map-marker-alt"></i> Venue</th>
           <th><i class="fas fa-calendar"></i> Date</th>
           <th><i class="fas fa-clock"></i> Time</th>
-          <th><i class="fas fa-trash"></i> Delete</th>
-          <th><i class="fas fa-edit"></i> Update</th>
+          <th sec:authorize="isAuthenticated()"><i class="fas fa-trash"></i> Delete</th>
+          <th sec:authorize="isAuthenticated()"><i class="fas fa-edit"></i> Update</th>
         </tr>
       </thead>
       <tbody>
@@ -32,19 +32,19 @@
           <td th:text="${{e.date}}">Event date</td>
           <td th:text="${{e.time}}">Event time</td>
            <td>
-            <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete">
+            <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete" sec:authorize="isAuthenticated()">
               <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
             </form>
           </td>    
           <td>
-            <form th:action="@{/events/update/{num}(num=${e.id})}" th:method="get">
+            <form th:action="@{/events/update/{num}(num=${e.id})}" th:method="get" sec:authorize="isAuthenticated()">
               <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
             </form>
           </td>      
         </tr>
       </tbody>
     </table>
-
+	<a sec:authorize="isAuthenticated()" class="btn btn-primary" role="button" href="/events/new"><i class="fas fa-plus" aria-hidden="true"></i> Add a new event</a>
   </div>
 
 </body>
