@@ -12,7 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import antlr.collections.List;
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
@@ -47,7 +55,7 @@ public class EventsController {
 	}
 	
 	@PatchMapping("/{id}")
-public String updateEvent(@PathVariable("id") long id,
+	public String updateEvent(@PathVariable("id") long id,
         @RequestParam("name") String name,
         @RequestParam("description") String description,
         @RequestParam("date") String date,
@@ -88,4 +96,11 @@ public String updateEvent(@PathVariable("id") long id,
 		return "redirect:/events";
 	}
 
+	@GetMapping("/search")
+	public String searchEventByName(
+			@RequestParam("query") String query, Model model) {
+		model.addAttribute("events", eventService.findByNameContainingIgnoreCase(query));
+
+		return "events/index";
+	}
 }

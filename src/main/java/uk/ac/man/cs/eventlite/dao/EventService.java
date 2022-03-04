@@ -19,4 +19,6 @@ public interface EventService {
 	void deleteById(long id);
 
 	boolean existsById(long id);
+
+	Iterable<Event> findByNameContainingIgnoreCase(String query);
 }

@@ -31,6 +31,10 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.findById(id);
 	}
 
+	public Iterable<Event> findByNameContainingIgnoreCase(String query) {
+		return eventRepository.findByNameContainingIgnoreCase(query);
+	}
+	
 	@Override
 	public Event save(Event event) {
 		return eventRepository.save(event);
@@ -50,5 +54,4 @@ public class EventServiceImpl implements EventService {
 	public boolean existsById(long id) {
 		return eventRepository.existsById(id);
 	}
-
 }
