@@ -9,6 +9,8 @@ public interface EventService {
 	public long count();
 
 	public Iterable<Event> findAll();
+	
+	public void update(Event event);
 
 	public Optional<Event> findById(long id);
 

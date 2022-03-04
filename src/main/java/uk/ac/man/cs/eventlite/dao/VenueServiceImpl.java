@@ -1,9 +1,13 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @Service
@@ -11,6 +15,7 @@ public class VenueServiceImpl implements VenueService {
 
 	private final static Logger log = LoggerFactory.getLogger(VenueServiceImpl.class);
 
+	
 	@Autowired
 	private VenueRepository venueRepository;
 
@@ -27,6 +32,11 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public void save(Venue venue) {
 		venueRepository.save(venue);
+	}
+	
+	@Override
+	public Optional<Venue> findById(long venue) {
+		return venueRepository.findById(venue);
 	}
 
 }
