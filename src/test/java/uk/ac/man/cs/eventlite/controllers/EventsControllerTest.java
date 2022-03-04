@@ -43,6 +43,9 @@ public class EventsControllerTest {
 
 	@MockBean
 	private EventService eventService;
+	
+	@MockBean
+	private VenueService venueService;
 
 	@Test
 	public void getIndexWhenNoEvents() throws Exception {
