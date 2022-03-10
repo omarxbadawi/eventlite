@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.man.cs.eventlite.entities.Event;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -22,6 +24,17 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
+	public Iterable<Event> findPrevious() {
+		return eventRepository.findByDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(LocalDate.now(), LocalTime.now());
+	}
+
+	@Override
+	public Iterable<Event> findUpcoming() {
+		return eventRepository.findByDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(LocalDate.now(), LocalTime.now());
+	}
+
+
+	@Override
 	public Iterable<Event> findAll() {
 		return eventRepository.findAllByOrderByDateAscTimeAsc();
 	}
@@ -33,6 +46,14 @@ public class EventServiceImpl implements EventService {
 
 	public Iterable<Event> findByNameContainingIgnoreCase(String query) {
 		return eventRepository.findByNameContainingIgnoreCase(query);
+	}
+
+	public Iterable<Event> searchUpcoming(String query) {
+		return eventRepository.findByNameContainingIgnoreCaseAndDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(query, LocalDate.now(), LocalTime.now());
+	}
+
+	public Iterable<Event> searchPrevious(String query) {
+		return eventRepository.findByNameContainingIgnoreCaseAndDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(query, LocalDate.now(), LocalTime.now());
 	}
 	
 	@Override

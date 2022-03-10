@@ -62,8 +62,8 @@ public class InitialDataLoader {
 			event1.setName("Event 1");
 			event1.setDescription("This is the best event ever");
 			event1.setVenue(venue);
-			event1.setTime(LocalTime.now());
-			event1.setDate(LocalDate.now());
+			event1.setTime(LocalTime.now().minusHours(2));
+			event1.setDate(LocalDate.now().minusDays(1));
 			eventService.save(event1);
 			Event event2 = new Event();
 			event2.setId(2);
@@ -81,6 +81,22 @@ public class InitialDataLoader {
 			event3.setTime(LocalTime.now().plusHours(2));
 			event3.setDate(LocalDate.now().plusDays(2));
 			eventService.save(event3);
+			Event event4 = new Event();
+			event4.setId(4);
+			event4.setName("Event 4");
+			event4.setDescription("This is the third best event ever");
+			event4.setVenue(venue3);
+			event4.setTime(LocalTime.now().minusHours(5));
+			event4.setDate(LocalDate.now().minusDays(1));
+			eventService.save(event4);
+			Event event5 = new Event();
+			event5.setId(5);
+			event5.setName("Event 5");
+			event5.setDescription("This is the third best event ever");
+			event5.setVenue(venue2);
+			event5.setTime(LocalTime.now().plusHours(1));
+			event5.setDate(LocalDate.now().plusDays(2));
+			eventService.save(event5);
 		};
 	}
 }

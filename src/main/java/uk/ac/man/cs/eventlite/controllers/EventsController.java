@@ -26,6 +26,9 @@ import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Controller
 @RequestMapping(value = "/events", produces = { MediaType.TEXT_HTML_VALUE })
 public class EventsController {
@@ -56,10 +59,13 @@ public class EventsController {
 	@GetMapping
 	public String getAllEvents(Model model) {
 
-		model.addAttribute("events", eventService.findAll());
+//		model.addAttribute("events", eventService.findAll());
+		model.addAttribute("previous", eventService.findPrevious());
+		model.addAttribute("upcoming", eventService.findUpcoming());
 
 		return "events/index";
 	}
+
 	
 	@DeleteMapping("/{id}")
 	public String deleteEvent(@PathVariable("id") long id) {
@@ -74,10 +80,13 @@ public class EventsController {
 	@GetMapping("/search")
 	public String searchEventByName(
 			@RequestParam("query") String query, Model model) {
-		model.addAttribute("events", eventService.findByNameContainingIgnoreCase(query));
+//		model.addAttribute("events", eventService.findByNameContainingIgnoreCase(query));
+		model.addAttribute("previous", eventService.searchPrevious(query));
+		model.addAttribute("upcoming", eventService.searchUpcoming(query));
 
 		return "events/index";
 	}
+
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newEvent(Model model) {
         
