@@ -18,8 +18,12 @@
     <td th:text="${{event.time}}">Event time</td>
     <form th:action="@{/events/{num}(num=${id})}" th:method="delete">
         <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
-        <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+        <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
     </form>
+    <form th:action="@{/events/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
+      <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
+    </form>
+    
 </div>
 </body>
 </html>
