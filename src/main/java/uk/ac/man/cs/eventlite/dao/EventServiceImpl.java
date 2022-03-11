@@ -27,8 +27,8 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Iterable<Event> findPrevious() {
 		ArrayList<Event> previousEvents = new ArrayList<>();
-		eventRepository.findByDateLessThanOrderByDateDescNameAsc(LocalDate.now()).forEach(previousEvents::add);
 		eventRepository.findByDateEqualsAndTimeLessThanEqualOrderByNameAsc(LocalDate.now(), LocalTime.now()).forEach(previousEvents::add);
+		eventRepository.findByDateLessThanOrderByDateDescNameAsc(LocalDate.now()).forEach(previousEvents::add);
 		return previousEvents;
 	}
 
@@ -64,8 +64,8 @@ public class EventServiceImpl implements EventService {
 
 	public Iterable<Event> searchPrevious(String query) {
 		ArrayList<Event> previousSearchedEvents = new ArrayList<>();
-		eventRepository.findByNameContainingIgnoreCaseAndDateLessThanOrderByDateDescNameAsc(query, LocalDate.now()).forEach(previousSearchedEvents::add);
 		eventRepository.findByNameContainingIgnoreCaseAndDateEqualsAndTimeLessThanEqualOrderByNameAsc(query, LocalDate.now(), LocalTime.now()).forEach(previousSearchedEvents::add);
+		eventRepository.findByNameContainingIgnoreCaseAndDateLessThanOrderByDateDescNameAsc(query, LocalDate.now()).forEach(previousSearchedEvents::add);
 		return previousSearchedEvents;
 	}
 	
