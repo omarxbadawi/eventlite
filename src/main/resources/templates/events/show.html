@@ -7,10 +7,12 @@
 <body>
 
 <div layout:fragment="content">
-    <h1>Event Page</h1>
+    <h1 th:text="${event.name}">Event</h1>
     <p th:text="${event.venue.name}">Event ALPHA</p>
     <p th:text="${#temporals.format(event.date, 'dd MMM yyyy')}">12th July 2022</p>
     <p th:text="${{event.time}}">Event time</p>
+    <h1 th:text="${event.name}">Event</h1>
+
     <p th:text="${event.description}">Lorem ipsum</p>
     <p>
         <form style="display: inline;" th:action="@{/events/{num}(num=${id})}" th:method="delete">
