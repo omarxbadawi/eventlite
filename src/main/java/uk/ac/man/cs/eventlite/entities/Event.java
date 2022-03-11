@@ -24,12 +24,11 @@ public class Event {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Future(message="The date provided must be in the future.")
+//	@Future(message="The date provided must be in the future.")
 	private LocalDate date;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "HH:mm")
-	
 	private LocalTime time;
 
 	@NotEmpty(message="A name must be provided.")

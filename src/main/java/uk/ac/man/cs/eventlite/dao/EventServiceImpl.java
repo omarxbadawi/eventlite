@@ -8,6 +8,7 @@ import uk.ac.man.cs.eventlite.entities.Event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -25,12 +26,18 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Iterable<Event> findPrevious() {
-		return eventRepository.findByDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(LocalDate.now(), LocalTime.now());
+		ArrayList<Event> previousEvents = new ArrayList<>();
+		eventRepository.findByDateLessThanOrderByDateDescNameAsc(LocalDate.now()).forEach(previousEvents::add);
+		eventRepository.findByDateEqualsAndTimeLessThanEqualOrderByNameAsc(LocalDate.now(), LocalTime.now()).forEach(previousEvents::add);
+		return previousEvents;
 	}
 
 	@Override
 	public Iterable<Event> findUpcoming() {
-		return eventRepository.findByDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(LocalDate.now(), LocalTime.now());
+		ArrayList<Event> upcomingEvents = new ArrayList<>();
+		eventRepository.findByDateEqualsAndTimeGreaterThanEqualOrderByNameAsc(LocalDate.now(), LocalTime.now()).forEach(upcomingEvents::add);
+		eventRepository.findByDateGreaterThanOrderByDateAscNameAsc(LocalDate.now()).forEach(upcomingEvents::add);
+		return upcomingEvents;
 	}
 
 
@@ -49,11 +56,17 @@ public class EventServiceImpl implements EventService {
 	}
 
 	public Iterable<Event> searchUpcoming(String query) {
-		return eventRepository.findByNameContainingIgnoreCaseAndDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(query, LocalDate.now(), LocalTime.now());
+		ArrayList<Event> upcomingSearchedEvents = new ArrayList<>();
+		eventRepository.findByNameContainingIgnoreCaseAndDateEqualsAndTimeGreaterThanEqualOrderByNameAsc(query, LocalDate.now(), LocalTime.now()).forEach(upcomingSearchedEvents::add);
+		eventRepository.findByNameContainingIgnoreCaseAndDateGreaterThanOrderByDateAscNameAsc(query, LocalDate.now()).forEach(upcomingSearchedEvents::add);
+		return upcomingSearchedEvents;
 	}
 
 	public Iterable<Event> searchPrevious(String query) {
-		return eventRepository.findByNameContainingIgnoreCaseAndDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(query, LocalDate.now(), LocalTime.now());
+		ArrayList<Event> previousSearchedEvents = new ArrayList<>();
+		eventRepository.findByNameContainingIgnoreCaseAndDateLessThanOrderByDateDescNameAsc(query, LocalDate.now()).forEach(previousSearchedEvents::add);
+		eventRepository.findByNameContainingIgnoreCaseAndDateEqualsAndTimeLessThanEqualOrderByNameAsc(query, LocalDate.now(), LocalTime.now()).forEach(previousSearchedEvents::add);
+		return previousSearchedEvents;
 	}
 	
 	@Override

@@ -9,14 +9,17 @@ import java.time.LocalTime;
 
 public interface EventRepository extends CrudRepository<Event, Long>{
 
-	Iterable<Event>	findByDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(LocalDate date, LocalTime time);
-	Iterable<Event>	findByDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(LocalDate date, LocalTime time);
+	Iterable<Event>	findByDateLessThanOrderByDateDescNameAsc(LocalDate nowDate);
+	Iterable<Event>	findByDateGreaterThanOrderByDateAscNameAsc(LocalDate nowDate);
+	Iterable<Event>	findByDateEqualsAndTimeGreaterThanEqualOrderByNameAsc(LocalDate nowDate, LocalTime nowTime);
+	Iterable<Event>	findByDateEqualsAndTimeLessThanEqualOrderByNameAsc(LocalDate nowDate, LocalTime nowTime);
 
 	Iterable<Event>	findAllByOrderByDateAscTimeAsc();
 
 	long count();
-
-	Iterable<Event>	findByNameContainingIgnoreCaseAndDateLessThanEqualAndTimeLessThanOrderByDateDescNameAsc(String query, LocalDate date, LocalTime time);
-	Iterable<Event>	findByNameContainingIgnoreCaseAndDateGreaterThanEqualAndTimeGreaterThanEqualOrderByDateAscNameAsc(String query, LocalDate date, LocalTime time);
+	Iterable<Event>	findByNameContainingIgnoreCaseAndDateLessThanOrderByDateDescNameAsc(String query, LocalDate nowDate);
+	Iterable<Event>	findByNameContainingIgnoreCaseAndDateGreaterThanOrderByDateAscNameAsc(String query, LocalDate nowDate);
+	Iterable<Event>	findByNameContainingIgnoreCaseAndDateEqualsAndTimeGreaterThanEqualOrderByNameAsc(String query, LocalDate nowDate, LocalTime nowTime);
+	Iterable<Event>	findByNameContainingIgnoreCaseAndDateEqualsAndTimeLessThanEqualOrderByNameAsc(String query, LocalDate nowDate, LocalTime nowTime);
 	Iterable<Event> findByNameContainingIgnoreCase(String query);
 }
