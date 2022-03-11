@@ -6,11 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Event</h1>
-
-    <blockquote>
-        <p th:text="${event.name}">Hello, World!</p>
-    </blockquote>
+    <h1 th:text="${event.name}">Event</h1>
 
     <p th:text="${event.description}">Lorem ipsum</p>
     <td th:text="${event.venue.name}">Event venue</td>
