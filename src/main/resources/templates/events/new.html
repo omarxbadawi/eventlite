@@ -26,7 +26,7 @@
 				<label for="name">Description:</label><input
 					class="form-control" type="text-area" name="description" id="description"
 					th:field="*{description}" placeholder="description" autofocus="autofocus"
-					required />
+					/>
 				<p class="text-danger" th:if="${#fields.hasErrors('description')}"
 					th:errors="*{description}">errors</p>
 			</div>
