@@ -9,7 +9,7 @@
 <div layout:fragment="content">
     <h1>Event Page</h1>
     <p th:text="${event.venue.name}">Event ALPHA</p>
-    <p th:text="${{event.date}}">12th July 2022</p>
+    <p th:text="${#temporals.format(event.date, 'dd MMM yyyy')}">12th July 2022</p>
     <p th:text="${{event.time}}">Event time</p>
     <p th:text="${event.description}">Lorem ipsum</p>
     <p>
