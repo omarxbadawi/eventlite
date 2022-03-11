@@ -1,25 +1,27 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <head>
     <title>An event</title>
 </head>
 <body>
+
 <div layout:fragment="content">
-    <h1>Event</h1>
-
-    <blockquote>
-        <p th:text="${event.name}">Hello, World!</p>
-    </blockquote>
-
+    <h1>Event Page</h1>
+    <p th:text="${event.venue.name}">Event ALPHA</p>
+    <p th:text="${{event.date}}">12th July 2022</p>
+    <p th:text="${{event.time}}">Event time</p>
     <p th:text="${event.description}">Lorem ipsum</p>
-    <td th:text="${event.venue.name}">Event venue</td>
-    <td th:text="${{event.date}}">Event date</td>
-    <td th:text="${{event.time}}">Event time</td>
-    <form th:action="@{/events/{num}(num=${id})}" th:method="delete">
-        <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
-        <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
-    </form>
+    <p>
+        <form style="display: inline;" th:action="@{/events/{num}(num=${id})}" th:method="delete">
+            <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+        </form>
+        <form style="display: inline;" th:action="@{/events/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
+          <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
+        </form>
+    </p>
+
 </div>
 </body>
 </html>
