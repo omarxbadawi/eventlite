@@ -38,11 +38,9 @@
       <thead>
       <tr>
         <th><i class="fas fa-bolt"></i> Event</th>
-        <th><i class="fas fa-map-marker-alt"></i> Venue</th>
         <th><i class="fas fa-calendar"></i> Date</th>
         <th><i class="fas fa-clock"></i> Time</th>
-        <th sec:authorize="isAuthenticated()"><i class="fas fa-trash"></i> Delete</th>
-        <th sec:authorize="isAuthenticated()"><i class="fas fa-edit"></i> Update</th>
+        <th><i class="fas fa-map-marker-alt"></i> Venue</th>
       </tr>
       </thead>
       <tbody>
@@ -50,19 +48,9 @@
         <td>
           <a th:href="@{/events/{num}(num=${e.id})}" th:text="${e.name}">My Event</a>
         </td>
-        <td th:text="${e.venue.name}">Event venue</td>
         <td th:text="${{e.date}}">Event date</td>
         <td th:text="${{e.time}}">Event time</td>
-        <td>
-          <form th:action="@{/events/{num}(num=${e.id})}" th:method="delete" sec:authorize="isAuthenticated()">
-            <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
-          </form>
-        </td>
-        <td>
-          <form th:action="@{/events/update/{num}(num=${e.id})}" th:method="get" sec:authorize="isAuthenticated()">
-            <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
-          </form>
-        </td>
+        <td th:text="${e.venue.name}">Event venue</td>
       </tr>
       </tbody>
     </table>

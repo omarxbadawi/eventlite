@@ -54,8 +54,9 @@
 						th:text="${venue.name} + ')'"></option>
 				</select>
 			</div>
+			<a class="btn btn-primary" role="button" th:href="@{/events/{num}(num=${id})}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
 			<button class="btn btn-primary" type="submit">
-				<i class="fas fa-bookmark" aria-hidden="true"></i>Save Event
+				<i class="fas fa-bookmark" aria-hidden="true"></i> Save Event
 			</button>
 	</form>
 	</div>
