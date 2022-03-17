@@ -14,7 +14,6 @@ import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 import uk.ac.man.cs.eventlite.exceptions.VenueNotFoundException;
-
 import javax.validation.Valid;
 
 @Controller
@@ -23,6 +22,9 @@ public class VenuesController {
 
 	@Autowired
 	private VenueService venueService;
+	
+	@Autowired
+	private EventService eventService;
 
 	@ExceptionHandler(EventNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
@@ -52,11 +54,21 @@ public class VenuesController {
 	
 	@DeleteMapping("/{id}")
 	public String deleteVenue(@PathVariable("id") long id) {
-		// todo only delete if no events have this venue
+		// todo display the error if the venue cannot be deleted
+		Iterable<Event> events = eventService.findAll();
+		boolean hasEvents = false;
+		for (Event event : events) {
+			if(event.getVenue().getId() == id) {
+				hasEvents = true;
+				break;
+			}
+		}
 		if (!venueService.existsById(id)) {
 			throw new EventNotFoundException(id);
 		}
-		venueService.deleteById(id);
+		if(!hasEvents) {
+			venueService.deleteById(id);
+		}
 		return "redirect:/venues";
 	}
 
