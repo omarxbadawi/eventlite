@@ -1,65 +1,60 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/default}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/default}">
 
 <head>
-<title>New Event</title>
+<title>New Venue</title>
 </head>
 
 <body>
-	<div layout:fragment="content">
-		<h1>Add Event</h1>
-		<form action="#" th:action="@{/events}" th:object="${event}"
-			method="post">
-			<div class="form-group"
-				th:classappend="${#fields.hasErrors('name')}? has-error">
-				<label for="name">Name:</label><input
-					class="form-control" type="text" name="name" id="name"
-					th:field="*{name}" placeholder="Name" autofocus="autofocus"
-					required />
-				<p class="text-danger" th:if="${#fields.hasErrors('name')}"
-					th:errors="*{name}">errors</p>
-			</div>
-			<div class="form-group"
-				th:classappend="${#fields.hasErrors('description')}? has-error">
-				<label for="name">Description:</label><input
-					class="form-control" type="text-area" name="description" id="description"
-					th:field="*{description}" placeholder="description" autofocus="autofocus"
-					/>
-				<p class="text-danger" th:if="${#fields.hasErrors('description')}"
-					th:errors="*{description}">errors</p>
-			</div>
-			<div class="form-group"
-				th:classappend="${#fields.hasErrors('date')}? has-error">
-				<label for="date">Date:</label><a class="text-danger"> *</a> <input
-					class="form-control" type="date" name="date" id="date"
-					th:field="*{date}" placeholder="Date" autofocus="autofocus"
-					required />
-				<p class="text-danger" th:if="${#fields.hasErrors('date')}"
-					th:errors="*{date}">errors</p>
-			</div>
-			<div class="form-group"
-				th:classappend="${#fields.hasErrors('time')}? has-error">
-				<label for="time">Time:</label> <input class="form-control"
-					type="time" name="time" id="time" th:field="*{time}"
-					placeholder="Time" autofocus="autofocus" />
-				<p class="text-danger" th:if="${#fields.hasErrors('time')}"
-					th:errors="*{time}">errors</p>
-			</div>
-			<div class="form-group">
-				<label for="venue">Venue:</label><select
-					th:field="*{venue}" class="form-control">
-					<option th:each="venue : ${venues}" th:value="${venue.id}"
-						th:text="${venue.name} + ')'"></option>
-				</select>
-			</div>
-			<a class="btn btn-primary" role="button" th:href="@{/events/{num}(num=${id})}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
-			<button class="btn btn-primary" type="submit">
-				<i class="fas fa-bookmark" aria-hidden="true"></i> Save Event
-			</button>
-	</form>
-	</div>
+    <div layout:fragment="content">
+        <h1>Add Venue</h1>
+        <form action="#" th:action="@{/venues}" th:object="${venue}"
+            method="post">
+            <div class="form-group col-md-6"
+                th:classappend="${#fields.hasErrors('name')}? has-error">
+                <label for="name">Name:</label><a class="text-danger"></a> <input
+                    class="form-control" type="text" name="name" id="name"
+                    th:field="*{name}" placeholder="Name" autofocus="autofocus"
+                    required />
+                <p class="text-danger" th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}">errors</p>
+            </div>
+            <div class="form-group col-md-6"
+                th:classappend="${#fields.hasErrors('capacity')}? has-error">
+                <label for="capacity">Capacity:</label><a class="text-danger"></a>
+                <input class="form-control" type="number" name="capacity" id="capacity"
+                    th:field="*{capacity}" placeholder="Capacity" autofocus="autofocus"
+                    required />
+                <p class="text-danger" th:if="${#fields.hasErrors('capacity')}"
+                    th:errors="*{capacity}">errors</p>
+            </div>
+            <div class="form-group col-md-6"
+                th:classappend="${#fields.hasErrors('road')}? has-error">
+                <label for="road">Road Name:</label><a class="text-danger"></a>
+                <input class="form-control" type="text" name="road" id="road"
+                    th:field="*{road}" placeholder="Road Name" autofocus="autofocus"
+                    required />
+                <p class="text-danger" th:if="${#fields.hasErrors('road')}"
+                    th:errors="*{road}">errors</p>
+            </div>
+            <div class="form-group col-md-6"
+                th:classappend="${#fields.hasErrors('postcode')}? has-error">
+                <label for="postcode">Postcode:</label><a class="text-danger"></a>
+                <input class="form-control" type="text" name="postcode" id="postcode"
+                    th:field="*{postcode}" placeholder="Postcode" autofocus="autofocus"
+                    required />
+                <p class="text-danger" th:if="${#fields.hasErrors('postcode')}"
+                    th:errors="*{postcode}">errors</p>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-bookmark" aria-hidden="true"></i>Add
+            </button>
+            <a class="btn btn-warning" role="button" href="/venues"><i
+                class="fas fa-ban" aria-hidden="true"></i> Cancel</a>
+    </form>
+    </div>
 </body>
 
 </html>

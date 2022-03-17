@@ -36,7 +36,9 @@ public class Security extends WebSecurityConfigurerAdapter {
 
 	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"),
 			new AntPathRequestMatcher("/events/{id:[\\d]+}"), new AntPathRequestMatcher("/events/update/{id:[\\d]+}"), 
-			new AntPathRequestMatcher("/events/new")};
+			new AntPathRequestMatcher("/events/new"), new AntPathRequestMatcher("/venues", "POST"),
+			new AntPathRequestMatcher("/venues/{id:[\\d]+}"), new AntPathRequestMatcher("/venues/update/{id:[\\d]+}"), 
+			new AntPathRequestMatcher("/venues/new")};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
