@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,9 +23,10 @@ public class Event {
 	@GeneratedValue
 	private long id;
 	
+	@NotNull(message = "Event must have a date.")
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-//	@Future(message="The date provided must be in the future.")
+	@Future(message="The date provided must be in the future.")
 	private LocalDate date;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
