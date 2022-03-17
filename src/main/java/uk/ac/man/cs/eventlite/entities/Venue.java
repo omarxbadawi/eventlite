@@ -11,6 +11,10 @@ public class Venue {
 
 	private String name;
 
+	private String road;
+
+	private String postcode;
+
 	private int capacity;
 
 	public Venue() {
@@ -38,5 +42,21 @@ public class Venue {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+
+	public String getRoad() {
+		return road;
+	}
+
+	public void setRoad(String road) {
+		this.road = road;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
 	}
 }
