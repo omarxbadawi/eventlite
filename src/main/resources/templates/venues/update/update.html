@@ -4,20 +4,20 @@
 	layout:decorate="~{layouts/default}">
 
 <head>
-<title>New Event</title>
+<title>New venue</title>
 </head>
 
 <body>
 	<div layout:fragment="content">
 		
-		<form action="#" th:action="@{/events/update/{num}(num=${event.id})}" th:object="${event}" 
+		<form action="#" th:action="@{/venues/update/{num}(num=${venue.id})}" th:object="${venue}" 
 			method="post">
-			<h1>Update Event</h1>
+			<h1>Update venue</h1>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('name')}? has-error">
 				<label for="name">Name:</label><input
 					class="form-control" type="text" name="name" id="name"
-					th:field="*{name}" th:value="${event.name}" autofocus="autofocus"
+					th:field="*{name}" th:value="${venue.name}" autofocus="autofocus"
 					required />
 				<p class="text-danger" th:if="${#fields.hasErrors('name')}"
 					th:errors="*{name}">errors</p>
@@ -26,8 +26,8 @@
 				th:classappend="${#fields.hasErrors('description')}? has-error">
 				<label for="name">Description:</label><input
 					class="form-control" type="text-area" name="description" id="description"
-					th:field="*{description}" th:value="${event.description}" autofocus="autofocus"
-					/>
+					th:field="*{description}" th:value="${venue.description}" autofocus="autofocus"
+					required />
 				<p class="text-danger" th:if="${#fields.hasErrors('description')}"
 					th:errors="*{description}">errors</p>
 			</div>
@@ -35,7 +35,7 @@
 				th:classappend="${#fields.hasErrors('date')}? has-error">
 				<label for="date">Date:</label><a class="text-danger"> *</a> <input
 					class="form-control" type="date" name="date" id="date"
-					th:field="*{date}" th:value="${event.date}" autofocus="autofocus"
+					th:field="*{date}" th:value="${venue.date}" autofocus="autofocus"
 					required />
 				<p class="text-danger" th:if="${#fields.hasErrors('date')}"
 					th:errors="*{date}">errors</p>
@@ -44,7 +44,7 @@
 				th:classappend="${#fields.hasErrors('time')}? has-error">
 				<label for="time">Time:</label> <input class="form-control"
 					type="time" name="time" id="time" th:field="*{time}"
-					th:value="${event.description}" autofocus="autofocus" />
+					th:value="${venue.description}" autofocus="autofocus" />
 				<p class="text-danger" th:if="${#fields.hasErrors('time')}"
 					th:errors="*{time}">errors</p>
 			</div>
@@ -55,9 +55,9 @@
 						th:text="${venue.name} + ')'"></option>
 				</select>
 			</div>
-			<a class="btn btn-primary" role="button" th:href="@{/events/{num}(num=${id})}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+			<a class="btn btn-primary" role="button" th:href="@{/venues/{num}(num=${id})}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
 			<button class="btn btn-success" type="submit">
-				<i class="fas fa-edit" aria-hidden="true"></i> Update Event
+				<i class="fas fa-edit" aria-hidden="true"></i> Update venue
 			</button>
 			<br><br>
 	</form>
