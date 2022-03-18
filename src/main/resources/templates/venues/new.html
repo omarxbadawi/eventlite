@@ -22,15 +22,6 @@
                     th:errors="*{name}">errors</p>
             </div>
             <div class="form-group col-md-6"
-                th:classappend="${#fields.hasErrors('capacity')}? has-error">
-                <label for="capacity">Capacity:</label><a class="text-danger"></a>
-                <input class="form-control" type="number" name="capacity" id="capacity"
-                    th:field="*{capacity}" placeholder="Capacity" autofocus="autofocus"
-                    required />
-                <p class="text-danger" th:if="${#fields.hasErrors('capacity')}"
-                    th:errors="*{capacity}">errors</p>
-            </div>
-            <div class="form-group col-md-6"
                 th:classappend="${#fields.hasErrors('road')}? has-error">
                 <label for="road">Road Name:</label><a class="text-danger"></a>
                 <input class="form-control" type="text" name="road" id="road"
@@ -47,6 +38,15 @@
                     required />
                 <p class="text-danger" th:if="${#fields.hasErrors('postcode')}"
                     th:errors="*{postcode}">errors</p>
+            </div>
+            <div class="form-group col-md-6"
+                th:classappend="${#fields.hasErrors('capacity')}? has-error">
+                <label for="capacity">Capacity:</label><a class="text-danger"></a>
+                <input class="form-control" type="number" name="capacity" id="capacity"
+                    th:field="*{capacity}" placeholder="Capacity" autofocus="autofocus"
+                    required />
+                <p class="text-danger" th:if="${#fields.hasErrors('capacity')}"
+                    th:errors="*{capacity}">errors</p>
             </div>
             <button class="btn btn-primary" type="submit">
                 <i class="fas fa-bookmark" aria-hidden="true"></i>Add

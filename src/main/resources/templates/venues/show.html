@@ -2,23 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <head>
-    <title>An event</title>
+    <title>A venue</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="${event.name}">Event</h1>
-    <p th:text="${event.venue.name}">Event ALPHA</p>
-    <p th:text="${#temporals.format(event.date, 'dd MMM yyyy')}">12th July 2022</p>
-    <p th:text="${{event.time}}">Event time</p>
-
-    <p th:text="${event.description}">Lorem ipsum</p>
+    <h1 th:text="${venue.name}">Venue</h1>
+    <p th:text="${venue.road}">Venue ROAD</p>
+    <p th:text="${venue.postcode}">Venue POST</p>
+    <p th:text="${venue.capacity}">Venue CAPACITY</p>
     <p>
-        <form style="display: inline;" th:action="@{/events/{num}(num=${id})}" th:method="delete">
-            <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <form style="display: inline;" th:action="@{/venues/{num}(num=${id})}" th:method="delete">
+            <a class="btn btn-primary" role="button" onclick="history.go(-1);" style="color:white"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+            
             <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
         </form>
-        <form style="display: inline;" th:action="@{/events/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
+        <form style="display: inline;" th:action="@{/venues/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
           <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
         </form>
     </p>
