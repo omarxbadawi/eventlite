@@ -81,18 +81,18 @@ public class EventServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 	
 	@Test
 	public void updateTest() {
-		Event event = eventService.findById(1).get();
+		Event event = eventService.findById(4).get();
 		
 		event.setName("new");
 		eventService.save(event);
 		
-		event = eventService.findById(1).get();
+		event = eventService.findById(4).get();
 		assertThat("new", equalTo(event.getName()));
 	}
 	
 	@Test
 	public void findByIdTest() {
-		Optional<Event> event = eventService.findById(1);
+		Optional<Event> event = eventService.findById(4);
 		
 		assertThat(false, equalTo(event.isEmpty()));
 		assertThat("Event 1", equalTo(event.get().getName()));
@@ -110,14 +110,14 @@ public class EventServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 	
 	@Test
 	public void deleteByIdTest() {
-		eventService.deleteById(1);
+		eventService.deleteById(4);
 		
-		assertThat(false, equalTo(eventService.existsById(1)));
+		assertThat(false, equalTo(eventService.existsById(4)));
 	}
 	
 	@Test
 	public void existsByIdTest() {
-		assertThat(true, equalTo(eventService.existsById(1)));
+		assertThat(true, equalTo(eventService.existsById(4)));
 	}
 	
 	@Test
