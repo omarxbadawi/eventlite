@@ -44,7 +44,19 @@ public class HomePageController {
             topThreeVenues.add(sortedVenues.get(sortedVenues.size() - i).getKey());
         }
 
+        
         model.addAttribute("venues", topThreeVenues);
+        Iterable<Event> upcommingEvents = eventService.findUpcoming();
+        List<Event> upcomingThreeEvents = new ArrayList<Event>();
+        int i = 0;
+        for( Event e : upcommingEvents ){
+        	if (i > 2) {
+        		break;
+        	}   
+        	upcomingThreeEvents.add(e);
+        	i++;
+        }
+        model.addAttribute("events", upcomingThreeEvents);
 
         return "/index";
     }
