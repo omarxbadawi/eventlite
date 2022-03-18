@@ -14,4 +14,13 @@ public interface VenueService {
 	void save(Venue venue);
 
 	Optional<Venue> findById(long parseLong);
+
+	void update(Venue venue);
+
+	void deleteById(long id);
+
+	boolean existsById(long id);
+
+	Iterable<Venue> findByNameContainingIgnoreCase(String query);
+
 }

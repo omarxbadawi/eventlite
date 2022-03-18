@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @Service
@@ -26,7 +25,7 @@ public class VenueServiceImpl implements VenueService {
 
 	@Override
 	public Iterable<Venue> findAll() {
-		return venueRepository.findAll();
+		return venueRepository.findAllByOrderByNameAsc();
 	}
 
 	@Override
@@ -37,6 +36,25 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public Optional<Venue> findById(long venue) {
 		return venueRepository.findById(venue);
+	}
+
+	@Override
+	public void update(Venue venue) {
+		venueRepository.save(venue);
+	}
+
+	@Override
+	public void deleteById(long id) {
+		venueRepository.deleteById(id);
+	}
+
+	@Override
+	public boolean existsById(long id) {
+		return venueRepository.existsById(id);
+	}
+
+	public Iterable<Venue> findByNameContainingIgnoreCase(String query) {
+		return venueRepository.findByNameContainingIgnoreCase(query);
 	}
 
 }
