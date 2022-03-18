@@ -7,10 +7,14 @@
 <body>
 
 <div layout:fragment="content">
+    <div class="alert alert-danger" style="margin-top: 12px" role="alert" th:if="${deleteError}">
+        Cannot delete venue as it is used by an event
+    </div>
     <h1 th:text="${venue.name}">Venue</h1>
     <p th:text="${venue.road}">Venue ROAD</p>
     <p th:text="${venue.postcode}">Venue POST</p>
     <p th:text="${venue.capacity}">Venue CAPACITY</p>
+
     <p>
         <form style="display: inline;" th:action="@{/venues/{num}(num=${id})}" th:method="delete">
             <a class="btn btn-primary" role="button" onclick="history.go(-1);" style="color:white"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>

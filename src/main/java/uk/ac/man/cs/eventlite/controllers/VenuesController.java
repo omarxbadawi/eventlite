@@ -53,8 +53,7 @@ public class VenuesController {
 
 	
 	@DeleteMapping("/{id}")
-	public String deleteVenue(@PathVariable("id") long id) {
-		// todo display the error if the venue cannot be deleted
+	public String deleteVenue(@PathVariable("id") long id, Model model) {
 		Iterable<Event> events = eventService.findAll();
 		boolean hasEvents = false;
 		for (Event event : events) {
@@ -66,10 +65,14 @@ public class VenuesController {
 		if (!venueService.existsById(id)) {
 			throw new EventNotFoundException(id);
 		}
+		model.addAttribute("deleteError", hasEvents);
 		if(!hasEvents) {
 			venueService.deleteById(id);
+			return "redirect:/venues";
 		}
-		return "redirect:/venues";
+		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
+		model.addAttribute("venue", venue);
+		return "venues/show";
 	}
 
 
