@@ -53,22 +53,22 @@ public class TestDataLoader {
 			event1.setId(1);
 			event1.setName("Event 1");
 			event1.setVenue(venue);
-			event1.setTime(LocalTime.now());
+			event1.setTime(LocalTime.now().plusHours(1));
 			event1.setDate(LocalDate.now());
 			eventService.save(event1);
 			Event event2 = new Event();
 			event2.setId(2);
 			event2.setName("Event 2");
 			event2.setVenue(venue2);
-			event2.setTime(LocalTime.now().plusHours(1));
-			event2.setDate(LocalDate.now().plusDays(1));
+			event2.setTime(LocalTime.now());
+			event2.setDate(LocalDate.now().minusDays(1));
 			eventService.save(event2);
 			Event event3 = new Event();
 			event3.setId(3);
 			event3.setName("Event 3");
 			event3.setVenue(venue3);
-			event3.setTime(LocalTime.now().plusHours(2));
-			event3.setDate(LocalDate.now().plusDays(2));
+			event3.setTime(LocalTime.now());
+			event3.setDate(LocalDate.now().plusDays(1));
 			eventService.save(event3);
 		};
 	}
