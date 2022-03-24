@@ -1,11 +1,18 @@
 package uk.ac.man.cs.eventlite.entities;
 
+import java.io.IOException;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
+import com.mapbox.geojson.Point;
+
+import retrofit2.Response;
 
 @Entity
 public class Venue {
@@ -29,7 +36,11 @@ public class Venue {
 	@NotNull(message = "Venue must have a capacity.")
 	@Min(value = 1, message = "Venue capacity must be positive.")
 	private int capacity;
-
+	
+	private double longitude;
+	
+	private double latitude;
+	
 	public Venue() {
 	}
 
@@ -71,5 +82,32 @@ public class Venue {
 
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+	}
+	
+	public double getLongitude() {
+		return longitude;
+	};
+	
+	public double getLatitude() {
+		return latitude;
+	}
+	
+	public void setLongLat() {
+		MapboxGeocoding mapboxGeocoding = MapboxGeocoding.builder()
+				.accessToken("pk.eyJ1IjoiYnNtaXRoMTU2IiwiYSI6ImNsMTU2emQ5MzB4cnIzanMwdTA5cDBmMW0ifQ.60o5nY2oKBQLMipUtSjuwQ")
+				.query(road + " " + postcode).build();
+		
+		try {
+			Response<GeocodingResponse> response = mapboxGeocoding.executeCall();
+			Thread.sleep(1000L);
+			
+			GeocodingResponse geoResponse = response.body();
+			Point coords = geoResponse.features().get(0).center();
+			
+			longitude = coords.longitude();
+			latitude = coords.latitude();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		};
 	}
 }
