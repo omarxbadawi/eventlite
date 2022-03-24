@@ -89,16 +89,7 @@
                 .addTo(map);
 
       /*[/]*/
-      /*[# th:each="e : ${previous}"]*/
 
-      venue = /*[[${e.venue}]]*/ null;
-
-      // Create a default Marker and add it to the map.
-      new mapboxgl.Marker()
-              .setLngLat([venue.longitude, venue.latitude])
-              .addTo(map);
-
-      /*[/]*/
     /*]]>*/
     </script>
   </div>
