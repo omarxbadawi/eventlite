@@ -4,6 +4,12 @@
       layout:decorate="~{layouts/default}">
 <head>
   <title>All events</title>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { width: 100%; height: 400px }
+  </style>
 </head>
 <body>
   <div layout:fragment="content">
@@ -59,6 +65,42 @@
       </tbody>
     </table>
 	<a sec:authorize="isAuthenticated()" class="btn btn-primary" role="button" href="/events/new"><i class="fas fa-plus" aria-hidden="true"></i> Add a new event</a>
+    <div id="map"></div>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoiYnNtaXRoMTU2IiwiYSI6ImNsMTU2emQ5MzB4cnIzanMwdTA5cDBmMW0ifQ.60o5nY2oKBQLMipUtSjuwQ';
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-2.244644, 53.483959],
+        zoom: 6
+      });
+
+      let venue = null
+      /*[# th:each="e : ${upcoming}"]*/
+
+        venue = /*[[${e.venue}]]*/ null;
+
+        // Create a default Marker and add it to the map.
+        new mapboxgl.Marker()
+                .setLngLat([venue.longitude, venue.latitude])
+                .addTo(map);
+
+      /*[/]*/
+      /*[# th:each="e : ${previous}"]*/
+
+      venue = /*[[${e.venue}]]*/ null;
+
+      // Create a default Marker and add it to the map.
+      new mapboxgl.Marker()
+              .setLngLat([venue.longitude, venue.latitude])
+              .addTo(map);
+
+      /*[/]*/
+    /*]]>*/
+    </script>
   </div>
 
 </body>
