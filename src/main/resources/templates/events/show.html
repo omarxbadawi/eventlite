@@ -3,6 +3,12 @@
       layout:decorate="~{layouts/default}">
 <head>
     <title>An event</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+	  <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+	  <style>
+	    body { margin: 0; padding: 0; }
+	    #map { width: 100%; height: 400px }
+  </style>
 </head>
 <body>
 
@@ -24,7 +30,36 @@
           <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
         </form>
     </p>
-
+	<div id="map"></div>
+    <script th:inline="javascript">
+		      /*<![CDATA[*/
+		
+			  let venue = null
+		      venue = /*[[${event.venue}]]*/ null;
+		      
+		      let name = null
+		      name = /*[[${event.name}]]*/ null;
+		      // create the popup
+			  const popup = new mapboxgl.Popup({ offset: 25 }).setText(name);
+		     
+		      mapboxgl.accessToken = 'pk.eyJ1IjoiYnNtaXRoMTU2IiwiYSI6ImNsMTU2emQ5MzB4cnIzanMwdTA5cDBmMW0ifQ.60o5nY2oKBQLMipUtSjuwQ';
+		      const map = new mapboxgl.Map({
+		        container: 'map',
+		        style: 'mapbox://styles/mapbox/streets-v11',
+		        center: [venue.longitude, venue.latitude],
+		        zoom: 6
+		      });
+		
+		      
+		
+		        // Create a default Marker and add it to the map.
+		        new mapboxgl.Marker()
+		                .setLngLat([venue.longitude, venue.latitude])
+		                .setPopup(popup) // sets a popup on this marker
+		                .addTo(map);
+		
+		    /*]]>*/
+    </script>
 </div>
 </body>
 </html>
