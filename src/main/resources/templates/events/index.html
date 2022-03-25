@@ -82,14 +82,14 @@
       let venue = null
 	  let popup = null
 	  let el = null
-      /*[# th:each="e : ${upcoming}"]*/
+      /*[# th:each="i : ${#numbers.sequence(upcoming.size() - 1, 0, -1)}"]*/
         
-        venue = /*[[${e.venue}]]*/ null;
-        e = /*[[${e}]]*/ null;
+        venue = /*[[${upcoming[i].venue}]]*/ null;
+        e = /*[[${upcoming[i]}]]*/ null;
 
 		// create the popup
 		popup = new mapboxgl.Popup({ offset: 25 })
-		.setHTML('<h5 style="text-align: center;">' + e.name + '</h5>' + '<body style="text-align: center;">Starts at: ' + e.time + '</body>');
+		.setHTML('<h5 style="text-align: center;">' + e.name + '</h5>' + '<body style="text-align: center;">Starts at ' + e.time + '</body>');
 		 
 		// create DOM element for the marker
 		el = document.createElement('div');
