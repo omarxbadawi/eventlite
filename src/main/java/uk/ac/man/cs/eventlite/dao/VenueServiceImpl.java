@@ -29,9 +29,8 @@ public class VenueServiceImpl implements VenueService {
 	}
 
 	@Override
-	public void save(Venue venue) {
-		venue.setLongLat();
-		venueRepository.save(venue);
+	public Venue save(Venue venue) {
+		return venueRepository.save(venue);
 	}
 	
 	@Override
@@ -41,7 +40,6 @@ public class VenueServiceImpl implements VenueService {
 
 	@Override
 	public void update(Venue venue) {
-		venue.setLongLat();
 		venueRepository.save(venue);
 	}
 
