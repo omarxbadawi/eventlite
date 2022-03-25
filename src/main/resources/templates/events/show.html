@@ -39,11 +39,16 @@
 		      venue = /*[[${event.venue}]]*/ null;
 		      event = /*[[${event}]]*/ null;
 		      
+		      let timeText = "";
+			  if(event.time != null){
+				  timeText = '</h5>' + '<body style="text-align: center;">Starts at ' + event.time + '</body>';
+			  }
+		      
 		      let name = null
 		      name = /*[[${event.name}]]*/ null;
 		      // create the popup
 			  popup = new mapboxgl.Popup({ offset: 25 })
-			  .setHTML('<h5 style="text-align: center;">' + event.name + '</h5>' + '<body style="text-align: center;">Starts at: ' + event.time + '</body>');
+			  .setHTML('<h5 style="text-align: center;">' + event.name + timeText);
 		     
 		      mapboxgl.accessToken = 'pk.eyJ1IjoiYnNtaXRoMTU2IiwiYSI6ImNsMTU2emQ5MzB4cnIzanMwdTA5cDBmMW0ifQ.60o5nY2oKBQLMipUtSjuwQ';
 		      const map = new mapboxgl.Map({
