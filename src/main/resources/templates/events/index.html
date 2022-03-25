@@ -78,14 +78,28 @@
         zoom: 6
       });
 
+      let e = null
       let venue = null
+	  let popup = null
+	  let el = null
       /*[# th:each="e : ${upcoming}"]*/
-
+        
         venue = /*[[${e.venue}]]*/ null;
+        e = /*[[${e}]]*/ null;
+
+		// create the popup
+		popup = new mapboxgl.Popup({ offset: 25 })
+		.setHTML('<h5 style="text-align: center;">' + e.name + '</h5>' + '<body style="text-align: center;">Starts at: ' + e.time + '</body>');
+		 
+		// create DOM element for the marker
+		el = document.createElement('div');
+		el.id = 'marker';
+		 
 
         // Create a default Marker and add it to the map.
         new mapboxgl.Marker()
                 .setLngLat([venue.longitude, venue.latitude])
+				.setPopup(popup) // sets a popup on this marker
                 .addTo(map);
 
       /*[/]*/
