@@ -41,18 +41,21 @@ public class InitialDataLoader {
 			venue.setRoad("23 Manchester Road");
 			venue.setPostcode("E14 3BD");
 			venue.setCapacity(100);
+			venue.setLongLat();
 			venueService.save(venue);
 			Venue venue2 = new Venue();
 			venue2.setName("Venue 2");
 			venue2.setRoad("Highland Road");
 			venue2.setPostcode("S43 2EZ");
 			venue2.setCapacity(200);
+			venue2.setLongLat();
 			venueService.save(venue2);
 			Venue venue3 = new Venue();
 			venue3.setName("Venue 3");
 			venue3.setRoad("19 Acacia Avenue");
 			venue3.setPostcode("WA15 8QY");
 			venue3.setCapacity(300);
+			venue3.setLongLat();
 			venueService.save(venue3);
 
 			if (eventService.count() > 0) {
