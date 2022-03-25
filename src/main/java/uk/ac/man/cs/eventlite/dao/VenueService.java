@@ -11,7 +11,7 @@ public interface VenueService {
 
 	Iterable<Venue> findAll();
 
-	void save(Venue venue);
+	Venue save(Venue venue);
 
 	Optional<Venue> findById(long parseLong);
 

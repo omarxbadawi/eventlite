@@ -26,9 +26,9 @@ public class VenuesController {
 	@Autowired
 	private EventService eventService;
 
-	@ExceptionHandler(EventNotFoundException.class)
+	@ExceptionHandler(VenueNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String eventNotFoundHandler(EventNotFoundException ex, Model model) {
+	public String eventNotFoundHandler(VenueNotFoundException ex, Model model) {
 		model.addAttribute("not_found_id", ex.getId());
 
 		return "venues/not_found";
@@ -100,7 +100,7 @@ public class VenuesController {
             model.addAttribute("venue", venue);
             return "venues/new";
         }
-
+		venue.setLongLat();
         venueService.save(venue);
         redirectAttrs.addFlashAttribute("ok_message", "Added new venue");
         
@@ -126,6 +126,7 @@ public class VenuesController {
         venueToUpdate.setRoad(venue.getRoad());
         venueToUpdate.setPostcode(venue.getPostcode());
         venueToUpdate.setCapacity(venue.getCapacity());
+		venueToUpdate.setLongLat();
 		venueService.update(venueToUpdate);
         redirectAttrs.addFlashAttribute("ok_message", "Venue updated");
         
