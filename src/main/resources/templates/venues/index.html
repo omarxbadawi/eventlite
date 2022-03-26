@@ -3,16 +3,26 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <head>
-  <title>All events</title>
+  	<title>All events</title>
+	<style>
+	    body { margin: 0; padding: 0; }
+	    #map { width: 100%; height: 400px; margin-bottom: 3vh; margin-top: 3vh;}
+	    .input-group button {border-radius: 0px}
+	    .input-group button:last-child {border-radius: 0 4px 4px 0;}
+	    .input-group button i {padding-right: 4px}
+  	</style>
+  
 </head>
 <body>
   <div layout:fragment="content">
-    <h1>All venues</h1>
-	<form class="form" action="/venues/search/" method="get">
-        <input class="form" type="text" name="query" placeholder="Search venues..."/>
-        <button type="submit" >Search</button>
+    <h1>Venues</h1>
+	<form class="input-group" action="/events/search/" method="get">
+		<!--<div class="form-outline">-->
+        	<input class="form-control" type="text" name="query" placeholder="Search for an event..."/> 
+        	<button class="btn btn-primary" type="submit"><i class="fas fa-search" aria-hidden="true"></i>Search</button>
+        	<button id="clear" class="btn btn-secondary" type="reset"><i class="fas fa-ban" aria-hidden="true"></i>Clear</button>
 	</form>
-    <table class="table table-striped table-hover">
+    <table style="margin-top: 3vh" class="table table-striped table-hover">
       <thead>
         <tr>
           <th><i class="fas fa-home"></i> Venue</th>

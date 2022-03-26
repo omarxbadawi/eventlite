@@ -3,6 +3,9 @@
       layout:decorate="~{layouts/default}">
 <head>
     <title>A venue</title>
+    <style>
+    	.content {background-color: #eee; padding: 60px 30px 50px 30px; border-radius: 5px}
+    </style>
 </head>
 <body>
 
@@ -10,22 +13,23 @@
     <div class="alert alert-danger" style="margin-top: 12px" role="alert" th:if="${deleteError}">
         Cannot delete venue as it is used by an event
     </div>
-    <h1 th:text="${venue.name}">Venue</h1>
-    <p th:text="${venue.road}">Venue ROAD</p>
-    <p th:text="${venue.postcode}">Venue POST</p>
-    <p th:text="${venue.capacity}">Venue CAPACITY</p>
-
-    <p>
-        <form style="display: inline;" th:action="@{/venues/{num}(num=${id})}" th:method="delete">
-            <a class="btn btn-primary" role="button" onclick="history.go(-1);" style="color:white"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
-            
-            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
-        </form>
-        <form style="display: inline;" th:action="@{/venues/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
-          <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
-        </form>
-    </p>
-
+    <div class="content">
+	    <h1 th:text="${venue.name}">Venue</h1>
+	    <p th:text="${venue.road}">Venue ROAD</p>
+	    <p th:text="${venue.postcode}">Venue POST</p>
+	    <p th:text="${venue.capacity}">Venue CAPACITY</p>
+	
+	    <p>
+	        <form style="display: inline;" th:action="@{/venues/{num}(num=${id})}" th:method="delete">
+	            <a class="btn btn-primary" role="button" onclick="history.go(-1);" style="color:white"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
+	            
+	            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+	        </form>
+	        <form style="display: inline;" th:action="@{/venues/update/{num}(num=${id})}" th:method="get" sec:authorize="isAuthenticated()">
+	          <button  type="submit" class="btn btn-success"><i class="fas fa-edit" aria-hidden="true"></i> Update</button>
+	        </form>
+	    </p>
+	</div>
 </div>
 </body>
 </html>
