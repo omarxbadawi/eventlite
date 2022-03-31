@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import antlr.collections.List;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
@@ -38,7 +41,20 @@ public class EventsController {
 	
 	@Autowired
 	private VenueService venueService;
-
+	
+	private Twitter twitter;
+	
+	public EventsController() {
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+		.setOAuthConsumerKey("TFo3THB5RExORjhVNXZfZkxuYmo6MTpjaQ")
+		.setOAuthConsumerSecret("bdpkXoWVhkjlmO98f0m_PB5TmDqcLdwccGKocaCZoKDcP7K5Ch")
+		.setOAuthAccessToken("JCy3lweKo2iCQvDMEYcANjc9n")
+		.setOAuthAccessTokenSecret("d44LkCLLnnDBNISKHPdKTl2LYbiLCSp48um7aCLR4BlXQtPyJr");
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		twitter = tf.getInstance();
+	}
+	
 	@ExceptionHandler(EventNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String eventNotFoundHandler(EventNotFoundException ex, Model model) {
