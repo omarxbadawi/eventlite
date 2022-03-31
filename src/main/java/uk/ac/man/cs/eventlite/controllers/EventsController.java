@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import antlr.collections.List;
+import java.util.List;
+
+import twitter4j.DirectMessage;
+import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -31,6 +35,7 @@ import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/events", produces = { MediaType.TEXT_HTML_VALUE })
@@ -54,7 +59,10 @@ public class EventsController {
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
-	
+	public String createTweet(String tweet) throws TwitterException {
+	    Status status = twitter.updateStatus(tweet);
+	    return status.getText();
+	}
 	@ExceptionHandler(EventNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String eventNotFoundHandler(EventNotFoundException ex, Model model) {
