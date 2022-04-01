@@ -81,6 +81,19 @@ public class EventsController {
 			this.text = text;
 			this.link = link;
 		}
+		
+		public Date getDate() {
+			return this.date;
+		}
+		
+		public String getText() {
+			return this.text;
+		}
+		
+		public String getLink() {
+			return this.link;
+		}
+		
 	}
 
 	@GetMapping
