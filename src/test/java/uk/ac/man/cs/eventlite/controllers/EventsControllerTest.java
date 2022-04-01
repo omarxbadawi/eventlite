@@ -14,8 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
@@ -26,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -244,6 +242,20 @@ public class EventsControllerTest {
 				.andExpect(handler().methodName("createEvent")).andExpect(flash().attributeCount(0));
 
 		verify(eventService, never()).save(any(Event.class));
+	}
+
+	@Test
+	public void deleteEvent() throws Exception {
+		mvc.perform(delete("/events/4").with(user("Rob").roles(Security.ADMIN_ROLE))
+						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+						.accept(MediaType.TEXT_HTML).with(csrf()))
+				.andExpect(status().isFound()).andExpect(content().string(""))
+				.andExpect(view().name("redirect:/events")).andExpect(model().hasNoErrors());
+	}
+	@Test
+	public void getEvent() throws Exception {
+		mvc.perform(get("/events/4").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+				.andExpect(view().name("events/update")).andExpect(handler().methodName("updateR"));
 	}
 
 	
