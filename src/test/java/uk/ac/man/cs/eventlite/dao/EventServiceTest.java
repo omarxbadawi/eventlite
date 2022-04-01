@@ -84,7 +84,7 @@ public class EventServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 		Event event = eventService.findById(4).get();
 		
 		event.setName("new");
-		eventService.save(event);
+		eventService.update(event);
 		
 		event = eventService.findById(4).get();
 		assertThat("new", equalTo(event.getName()));

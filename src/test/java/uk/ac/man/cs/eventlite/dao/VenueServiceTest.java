@@ -57,7 +57,7 @@ public class VenueServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 		Venue venue = venueService.findById(1).get();
 
 		venue.setName("new");
-		venueService.save(venue);
+		venueService.update(venue);
 
 		venue = venueService.findById(1).get();
 		assertThat("new", equalTo(venue.getName()));
