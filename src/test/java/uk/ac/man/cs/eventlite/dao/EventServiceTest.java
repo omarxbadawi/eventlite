@@ -152,6 +152,7 @@ public class EventServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 		assertThat(false, equalTo(events.iterator().hasNext()));
 	}
 	
+	@Test
 	public void findNameContainingIgnoreCaseTest() {
 		Iterable<Event> events = eventService.findByNameContainingIgnoreCase("event");
 		

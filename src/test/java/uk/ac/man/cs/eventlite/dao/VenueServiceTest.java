@@ -108,7 +108,8 @@ public class VenueServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 		venues = venueService.findByNameContainingIgnoreCase("4");
 		assertThat(false, equalTo(venues.iterator().hasNext()));
 	}
-
+	
+	@Test
 	public void searchAllTest() {
 		Iterable<Venue> venues = venueService.findByNameContainingIgnoreCase("venue");
 
