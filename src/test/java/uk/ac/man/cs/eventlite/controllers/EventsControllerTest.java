@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,6 +76,8 @@ public class EventsControllerTest {
 	@Test
 	public void getIndexWhenNoEvents() throws Exception {
 		when(eventService.findAll()).thenReturn(Collections.<Event>emptyList());
+		when(eventService.findUpcoming()).thenReturn(Collections.<Event>emptyList());
+		when(eventService.findPrevious()).thenReturn(Collections.<Event>emptyList());
 
 		mvc.perform(get("/events").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/index")).andExpect(handler().methodName("getAllEvents"));
@@ -87,6 +90,8 @@ public class EventsControllerTest {
 	@Test
 	public void getIndexWithEvents() throws Exception {
 		when(eventService.findAll()).thenReturn(Collections.<Event>singletonList(event));
+		when(eventService.findUpcoming()).thenReturn(Collections.<Event>singletonList(event));
+		when(eventService.findPrevious()).thenReturn(Collections.<Event>singletonList(event));
 		when(event.getVenue()).thenReturn(venue);
 
 		mvc.perform(get("/events").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
@@ -98,8 +103,16 @@ public class EventsControllerTest {
 
 	@Test
 	public void getEventNotFound() throws Exception {
+		when(eventService.findById(99)).thenReturn(Optional.empty());
 		mvc.perform(get("/events/99").accept(MediaType.TEXT_HTML)).andExpect(status().isNotFound())
 				.andExpect(view().name("events/not_found")).andExpect(handler().methodName("getEvent"));
+	}
+
+	@Test
+	public void getEventFound() throws Exception {
+		when(eventService.findById(4)).thenReturn(Optional.of(event));
+		mvc.perform(get("/events/4").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+				.andExpect(view().name("events/show")).andExpect(handler().methodName("getEvent"));
 	}
 	
 	@Test

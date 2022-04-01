@@ -107,8 +107,6 @@ public class Venue {
 			
 			longitude = coords.longitude();
 			latitude = coords.latitude();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		};
+		} catch (IOException | InterruptedException e) { e.printStackTrace(); }
 	}
 }

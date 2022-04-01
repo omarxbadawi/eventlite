@@ -15,6 +15,7 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 import uk.ac.man.cs.eventlite.exceptions.VenueNotFoundException;
 import javax.validation.Valid;
+import java.util.Iterator;
 
 @Controller
 @RequestMapping(value = "/venues", produces = { MediaType.TEXT_HTML_VALUE })
@@ -56,21 +57,19 @@ public class VenuesController {
 	public String deleteVenue(@PathVariable("id") long id, Model model) {
 		Iterable<Event> events = eventService.findAll();
 		boolean hasEvents = false;
-		for (Event event : events) {
-			if(event.getVenue().getId() == id) {
+		Iterator<Event> eventIterator = events.iterator();
+		while(eventIterator.hasNext() && !hasEvents) {
+			if (eventIterator.next().getVenue().getId() == id) {
 				hasEvents = true;
-				break;
 			}
 		}
-		if (!venueService.existsById(id)) {
-			throw new EventNotFoundException(id);
-		}
+
+		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		model.addAttribute("deleteError", hasEvents);
 		if(!hasEvents) {
 			venueService.deleteById(id);
 			return "redirect:/venues";
 		}
-		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		model.addAttribute("venue", venue);
 		return "venues/show";
 	}
