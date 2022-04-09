@@ -70,17 +70,15 @@ public class EventsController {
 	}
 
 	@GetMapping("/{id}")
-	public String getEvent(@PathVariable("id") long id, Model model) throws TwitterException {
+	public String getEvent(@PathVariable("id") long id, Model model) {
 
 		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
 		model.addAttribute("event", event);
-		model.addAttribute("tweet", new String());
-//		String tweet = createTweet("HELLO");
 		return "events/show";
 	}
 
 	@PostMapping("/{id}")
-    public String getEvent(@PathVariable("id") long id, Model model, @RequestParam("tweet") String tweet) throws TwitterException {
+	public String getEvent(@PathVariable("id") long id, Model model, @RequestParam("tweet") String tweet) throws TwitterException {
 		createTweet(tweet);
         return "redirect:/events/{id}";
     }    
