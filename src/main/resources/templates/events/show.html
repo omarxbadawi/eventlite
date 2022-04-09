@@ -22,7 +22,7 @@
 	    <p th:text="${#temporals.format(event.date, 'dd MMM yyyy')}">12th July 2022</p>
 	    <p th:text="${{event.time}}">Event time</p>
 	
-	    <p th:text="${event.description}">Lorem ipsum</p>
+	    <i><p th:text="${event.description}">Lorem ipsum</p></i>
 	    <p>
 	        <form style="display: inline;" th:action="@{/events/{num}(num=${id})}" th:method="delete">
 	            <a class="btn btn-primary" role="button" th:href="@{/events}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>
