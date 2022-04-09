@@ -15,9 +15,9 @@
 
 <div layout:fragment="content">
 	<div class="content">
-	    <h1 th:text="${event.name}">Event</h1>
+	    <h1 class="display-4" th:text="${event.name}">Event</h1>
 	    <p>
-	    	<a th:href="@{/venues/{num}(num=${event.venue.id})}" th:text="${event.venue.name}"></a>	
+	    	<a class="lead" th:href="@{/venues/{num}(num=${event.venue.id})}" th:text="${event.venue.name}"></a>	
 	    </p>
 	    <p th:text="${#temporals.format(event.date, 'dd MMM yyyy')}">12th July 2022</p>
 	    <p th:text="${{event.time}}">Event time</p>
