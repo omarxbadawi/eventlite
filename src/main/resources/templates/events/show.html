@@ -34,14 +34,18 @@
 	    </p>
 	</div>
 	
-	<div class="twt">
-		<b>Share the event!</b>
-		<form th:action="@{/events/{num}(num=${id})}" method="post">
-	        	<p><input class="form-control" type="text" name="tweet" th:placeholder="${event.name}"/></p>
-	        	<div><button type="submit" onclick="showAlert();" class="btn btn-light"><i aria-hidden="true"></i>Send Tweet</button></div>
-		</form>
-	</div>	
-	
+    <div class="alert alert-success" style="margin-top: 12px" role="alert" th:if="${tweeted}" th:utext="'Your tweet: &lt;strong&gt;' + ${tweeted} + ' &lt;/strong&gt; was posted'">
+        Tweet posted
+    </div>
+    
+    <div class="twt">
+        <b>Share the event!</b>
+        <form th:action="@{/events/{num}(num=${id})}" method="post">
+                <p><input class="form-control" type="text" name="tweet" th:placeholder="${event.name}"/></p>
+                <div><button type="submit" class="btn btn-light"><i aria-hidden="true"></i>Send Tweet</button></div>
+        </form>
+    </div>    
+    	
 	<div id="map"></div>
     <script th:inline="javascript">
 		      /*<![CDATA[*/
