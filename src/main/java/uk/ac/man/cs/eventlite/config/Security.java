@@ -31,8 +31,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 //			new AntPathRequestMatcher("/events/{id:[\\d]+}", "POST"), new AntPathRequestMatcher("/events/update/**")};
 
 	private static final RequestMatcher[] NO_AUTH = { new AntPathRequestMatcher("/webjars/**", "GET"),
-			new AntPathRequestMatcher("/**", "GET"), new AntPathRequestMatcher("/h2-console/**"),
-			new AntPathRequestMatcher("/events/search", "GET")};
+			new AntPathRequestMatcher("/**", "GET"), new AntPathRequestMatcher("/h2-console/**"), 
+			new AntPathRequestMatcher("/events/{id:[\\d]+}", "POST"), new AntPathRequestMatcher("/events/search", "GET")};
 
 	private static final RequestMatcher[] ORGANIZER_AUTH = { new AntPathRequestMatcher("/events", "POST"),
 			new AntPathRequestMatcher("/events/{id:[\\d]+}"), new AntPathRequestMatcher("/events/update/{id:[\\d]+}"), 
