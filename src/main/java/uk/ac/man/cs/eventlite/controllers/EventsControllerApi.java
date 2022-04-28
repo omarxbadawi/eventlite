@@ -38,22 +38,6 @@ import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 public class EventsControllerApi {
 
 	private static final String NOT_FOUND_MSG = "{ \"error\": \"%s\", \"id\": %d }";
-	
-	@GetMapping
-	public void getEventslist(@PathVariable Long id) {
-		Event[] events = null;
-		Event eventz = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-		
-		for (int event = 0; event < events.length ; event ++){
-			eventAssembler.toModel(events[event]);
-		}
-	}
-	
-	public void getEvent(@PathVariable Long id){
-		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-		eventAssembler.toModel(event);
-		
-	}
 
 	@Autowired
 	private EventService eventService;
