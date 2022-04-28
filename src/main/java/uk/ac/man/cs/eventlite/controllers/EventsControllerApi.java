@@ -4,6 +4,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -36,6 +38,11 @@ import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 public class EventsControllerApi {
 
 	private static final String NOT_FOUND_MSG = "{ \"error\": \"%s\", \"id\": %d }";
+	
+	@GetMapping
+	public Map<String, Map> getEventslist() {
+		return null;
+	}
 
 	@Autowired
 	private EventService eventService;
