@@ -47,7 +47,7 @@
     </div>    
     	
 	<div id="map"></div>
-    <script th:inline="javascript">
+    <script th:if="${@environment.getProperty('isUnitTest') != 'true'}" th:inline="javascript">
 		      /*<![CDATA[*/
 		
 			  let venue = null

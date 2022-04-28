@@ -89,16 +89,13 @@ public class EventsControllerTest {
 
 	@Test
 	public void getIndexWithEvents() throws Exception {
-		when(eventService.findAll()).thenReturn(Collections.<Event>singletonList(event));
-		when(eventService.findUpcoming()).thenReturn(Collections.<Event>singletonList(event));
-		when(eventService.findPrevious()).thenReturn(Collections.<Event>singletonList(event));
-		when(event.getVenue()).thenReturn(venue);
+        when(eventService.findAll()).thenReturn(Collections.<Event>singletonList(event));
 
-		mvc.perform(get("/events").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/index")).andExpect(handler().methodName("getAllEvents"));
+        mvc.perform(get("/events").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(view().name("events/index")).andExpect(handler().methodName("getAllEvents"));
 
-		verify(eventService).findPrevious();
-		verify(eventService).findUpcoming();
+        verify(eventService).findPrevious();
+        verify(eventService).findUpcoming();
 	}
 
 	@Test
@@ -110,9 +107,12 @@ public class EventsControllerTest {
 
 	@Test
 	public void getEventFound() throws Exception {
-		when(eventService.findById(4)).thenReturn(Optional.of(event));
-		mvc.perform(get("/events/4").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/show")).andExpect(handler().methodName("getEvent"));
+		when(event.getVenue()).thenReturn(venue);
+		when(venue.getId()).thenReturn(2L);
+		when(venueService.findById(2)).thenReturn(Optional.of(venue));
+		when(eventService.findById(1)).thenReturn(Optional.of(event));
+        mvc.perform(get("/events/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(view().name("events/show")).andExpect(handler().methodName("getEvent"));
 	}
 	
 	@Test
@@ -159,6 +159,48 @@ public class EventsControllerTest {
 		
 		
 	}
+    @Test
+    public void deleteEventNotFound() throws Exception {
+        when(venueService.findAll()).thenReturn(Collections.<Venue>emptyList());
+        when(eventService.findById(99)).thenReturn(Optional.empty());
+        mvc.perform(get("/events/99").accept(MediaType.TEXT_HTML)).andExpect(status().isNotFound())
+                .andExpect(view().name("events/not_found")).andExpect(handler().methodName("getEvent"));
+    }
+    @Test
+    public void getEventUpdate() throws Exception {
+        when(eventService.findById(1)).thenReturn(Optional.of(event));
+        mvc.perform(get("/events/update/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(view().name("events/update/update")).andExpect(handler().methodName("updateEventPage"));
+    }
+    @Test
+    public void updateEventValid() throws Exception {
+        when(eventService.findById(1)).thenReturn(Optional.of(event));
+//        when(venueService.existsById(1)).thenReturn(true);
+        mvc.perform(post("/events/update/1").with(user("Rob").roles(Security.ADMIN_ROLE))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", "Test Event")
+                .param("description", "Awesome Event")
+                .param("date","3022-03-17")
+                .param("time", "00:00")
+                .accept(MediaType.TEXT_HTML).with(csrf())).andExpect(status().isFound()).andExpect(content().string(""))
+                .andExpect(view().name("redirect:/events")).andExpect(model().hasNoErrors())
+                .andExpect(handler().methodName("updateEvent")).andExpect(flash().attributeExists("ok_message"));
+    }
+
+    @Test
+    public void updateEventInvalid() throws Exception {
+        when(eventService.findById(1)).thenReturn(Optional.of(event));
+        mvc.perform(post("/events/update/1").with(user("Rob").roles(Security.ADMIN_ROLE))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("name", "")
+                        .param("description", "")
+                        .param("date", "")
+                        .param("time", "")
+                        .accept(MediaType.TEXT_HTML).with(csrf())).andExpect(status().isOk())
+                .andExpect(view().name("events/update/update"))
+                .andExpect(model().attributeHasFieldErrors("event", "name"))
+                .andExpect(handler().methodName("updateEvent"));
+    }
 	@Test
 	public void postLongEventAttributes() throws Exception {
 		mvc.perform(post("/events").with(user("Rob").roles(Security.ADMIN_ROLE))
@@ -256,21 +298,11 @@ public class EventsControllerTest {
 
 		verify(eventService, never()).save(any(Event.class));
 	}
-
-	@Test
-	public void deleteEvent() throws Exception {
-		mvc.perform(delete("/events/4").with(user("Rob").roles(Security.ADMIN_ROLE))
-						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-						.accept(MediaType.TEXT_HTML).with(csrf()))
-				.andExpect(status().isFound()).andExpect(content().string(""))
-				.andExpect(view().name("redirect:/events")).andExpect(model().hasNoErrors());
-	}
-	@Test
-	public void getEvent() throws Exception {
-		mvc.perform(get("/events/4").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/update")).andExpect(handler().methodName("updateR"));
-	}
-
-	
+    @Test
+    public void searchEvent() throws Exception {
+        when(eventService.findByNameContainingIgnoreCase("event")).thenReturn(Collections.<Event>singletonList(event));
+        mvc.perform(get("/events/search/?query=event").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(view().name("events/index")).andExpect(handler().methodName("searchEventByName"));
+    }
 
 }
