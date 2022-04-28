@@ -43,14 +43,10 @@ public class EventsControllerApi {
 	public void getEventslist(@PathVariable Long id) {
 		Event[] events = null;
 		Event eventz = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-
 		
 		for (int event = 0; event < events.length ; event ++){
 			eventAssembler.toModel(events[event]);
 		}
-		
-		
-		
 	}
 	
 	public void getEvent(@PathVariable Long id){
