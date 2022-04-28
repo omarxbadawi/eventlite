@@ -43,6 +43,10 @@ public class EventsControllerApi {
 	public Map<String, Map> getEventslist() {
 		return null;
 	}
+	
+	public Map<String, Map> getEvent(){
+		return null;
+	}
 
 	@Autowired
 	private EventService eventService;
