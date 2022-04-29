@@ -2,9 +2,13 @@ package uk.ac.man.cs.eventlite.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,23 +32,13 @@ public class VenuesControllerApi {
 	private VenueModelAssembler venueAssembler;
 	
 	@GetMapping
-	public Map<String, Map> getVenues(){
-		HashMap<String, Map> mainMap = new HashMap<>();
-		HashMap<String, Iterable<Venue>> _embedded = new HashMap<>();
-		HashMap<String, Map>  _links = new HashMap<>();
-		HashMap<String, String>  self = new HashMap<>();
-		HashMap<String, String>  profile = new HashMap<>();
-
-		_embedded.put("venues", venueService.findAll());
-		mainMap.put("_embedded", _embedded);
-		self.put("href", "http://localhost:8080/api/venues");
-		profile.put("href", "http://localhost:8080/api/profile/venues");
-		_links.put("self", self);
-		_links.put("profile", profile);
-		mainMap.put("_links", _links);
-		
-		return mainMap;
+	public CollectionModel<EntityModel<Venue>> getVenues(){
+		Link profileLink = Link.of("http://localhost:8080/api/profile/venues");
+		return venueAssembler.toCollectionModel(venueService.findAll())
+				.add(profileLink.withRel("profile"))
+				.add(linkTo(methodOn(VenuesControllerApi.class).getVenues()).withSelfRel());
 	}
+	
 	@GetMapping("/{id}")
 	public EntityModel<Venue> getVenue(@PathVariable("id") long id) {
 		Venue greeting = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
