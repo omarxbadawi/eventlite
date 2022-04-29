@@ -237,8 +237,8 @@ public class VenuesControllerTest {
     public void deleteVenueNotFound() throws Exception {
         when(eventService.findAll()).thenReturn(Collections.<Event>emptyList());
         when(venueService.findById(99)).thenReturn(Optional.empty());
-        mvc.perform(get("/venues/99").accept(MediaType.TEXT_HTML)).andExpect(status().isNotFound())
-                .andExpect(view().name("venues/not_found")).andExpect(handler().methodName("getVenue"));
+        mvc.perform(delete("/venues/99").with(user("Rob").roles(Security.ADMIN_ROLE)).accept(MediaType.TEXT_HTML).with(csrf())).andExpect(status().isNotFound())
+                .andExpect(view().name("venues/not_found")).andExpect(handler().methodName("deleteVenue"));
     }
 
     @Test

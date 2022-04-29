@@ -4,11 +4,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,22 +15,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,10 +38,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import twitter4j.RateLimitStatus;
+import twitter4j.ResponseList;
+import twitter4j.Status;
 import uk.ac.man.cs.eventlite.config.Security;
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.dao.TwitterService;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @ExtendWith(SpringExtension.class)
@@ -159,12 +154,38 @@ public class EventsControllerTest {
 		
 		
 	}
+
+	@Test
+	public void postTweet() throws Exception {
+
+		when(eventService.findById(1)).thenReturn(Optional.of(event));
+		when(event.getVenue()).thenReturn(venue);
+
+		mvc.perform(post("/events/1").with(user("Rob").roles(Security.ADMIN_ROLE))
+						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+						.param("tweet", "AgQYEQas4n3EIymFM1Kc")
+						.accept(MediaType.TEXT_HTML).with(csrf())).andExpect(status().isOk())
+				.andExpect(view().name("events/show")).andExpect(model().hasNoErrors());
+
+	}
+
+	@Test
+	public void deleteEvent() throws Exception {
+		when(eventService.existsById(2)).thenReturn(true);
+		when(eventService.findById(2)).thenReturn(Optional.of(event));
+		mvc.perform(delete("/events/2").with(user("Rob").roles(Security.ADMIN_ROLE))
+						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+						.accept(MediaType.TEXT_HTML).with(csrf()))
+				.andExpect(status().isFound()).andExpect(content().string(""))
+				.andExpect(view().name("redirect:/events")).andExpect(model().hasNoErrors());
+	}
+
     @Test
     public void deleteEventNotFound() throws Exception {
         when(venueService.findAll()).thenReturn(Collections.<Venue>emptyList());
         when(eventService.findById(99)).thenReturn(Optional.empty());
-        mvc.perform(get("/events/99").accept(MediaType.TEXT_HTML)).andExpect(status().isNotFound())
-                .andExpect(view().name("events/not_found")).andExpect(handler().methodName("getEvent"));
+        mvc.perform(delete("/events/99").with(user("Rob").roles(Security.ADMIN_ROLE)).accept(MediaType.TEXT_HTML).with(csrf())).andExpect(status().isNotFound())
+                .andExpect(view().name("events/not_found")).andExpect(handler().methodName("deleteEvent"));
     }
     @Test
     public void getEventUpdate() throws Exception {
