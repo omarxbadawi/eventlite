@@ -17,7 +17,7 @@ import uk.ac.man.cs.eventlite.assemblers.VenueModelAssembler;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
-import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
+import uk.ac.man.cs.eventlite.exceptions.VenueNotFoundException;
 
 @RestController
 @RequestMapping(value = "/api/venues", produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE })
@@ -47,7 +47,7 @@ public class VenuesControllerApi {
 	}
 	@GetMapping("/{id}")
 	public EntityModel<Venue> getVenue(@PathVariable("id") long id) {
-		Venue greeting = venueService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
+		Venue greeting = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		return venueAssembler.toModel(greeting);
 	}
 }
