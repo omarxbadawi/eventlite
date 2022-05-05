@@ -12,10 +12,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,6 +42,9 @@ public class VenuesControllerApiTest {
 
 	@Autowired
 	private MockMvc mvc;
+	
+	@Mock
+	private Venue venue;
 
 	@MockBean
 	private VenueService venueService;
@@ -77,5 +83,22 @@ public class VenuesControllerApiTest {
 				.andExpect(jsonPath("$._embedded.venues.length()", equalTo(1)));
 
 		verify(venueService).findAll();
+	}
+	
+	@Test
+	public void getVenue() throws Exception {
+		int id = 0;
+		venue = new Venue();
+		venue.setId(id);
+		when(venueService.findById(id)).thenReturn(Optional.of(venue));
+
+		mvc.perform(get("/api/venues/{id}", id).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(handler().methodName("getVenue")).andExpect(jsonPath("$.length()", equalTo(9)))
+				.andExpect(jsonPath("$._links.self.href", endsWith("/venues/"+ id)))
+				.andExpect(jsonPath("$._links.venue.href", endsWith("/venues/"+ id)))
+				.andExpect(jsonPath("$._links.events.href", endsWith("/venues/"+ id + "/events")))
+				.andExpect(jsonPath("$._links.next3events.href", endsWith("/venues/"+ id + "/next3events")));
+		
+		verify(venueService).findById(id);
 	}
 }
