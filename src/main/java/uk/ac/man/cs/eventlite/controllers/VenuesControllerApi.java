@@ -64,4 +64,19 @@ public class VenuesControllerApi {
 		return eventAssembler.toCollectionModel(events)
 				.add(linkTo(methodOn(VenuesControllerApi.class).getVenueEvents(id)).withSelfRel());
 	}
+	
+	@GetMapping("/{id}/next3events")
+	public CollectionModel<EntityModel<Event>> getVenueNext3Events(@PathVariable("id") long id) {
+		ArrayList<Event> events = new ArrayList<Event>();
+		for(Event event : eventService.findUpcoming()) {
+			if(event.getVenue().getId() == id) {
+				events.add(event);
+				if(events.size() == 3) {
+					break;
+				}
+			}
+		}
+		return eventAssembler.toCollectionModel(events)
+				.add(linkTo(methodOn(VenuesControllerApi.class).getVenueNext3Events(id)).withSelfRel());
+	}
 }
