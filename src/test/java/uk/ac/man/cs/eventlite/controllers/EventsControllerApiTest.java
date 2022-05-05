@@ -13,12 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -46,7 +48,7 @@ public class EventsControllerApiTest {
 	@MockBean
 	private VenueService venueService;
 
-	@MockBean
+	@SpyBean
 	private VenueModelAssembler venueAssembler;
 
 	@Test
@@ -83,5 +85,78 @@ public class EventsControllerApiTest {
 		mvc.perform(get("/api/events/99").accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.error", containsString("event 99"))).andExpect(jsonPath("$.id", equalTo(99)))
 				.andExpect(handler().methodName("getEvent"));
+	}
+	
+	@Test
+	public void getEventVenueEventNotFound() throws Exception {
+		mvc.perform(get("/api/events/99/venue").accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+				.andExpect(jsonPath("$.error", containsString("event 99"))).andExpect(jsonPath("$.id", equalTo(99)))
+				.andExpect(handler().methodName("getEventVenue"));
+	}
+	@Test
+	public void getEvent() throws Exception {
+		
+		Event e = new Event();
+		Venue v = new Venue();
+		v.setName("Cat");
+		LocalDate date = LocalDate.parse("3022-03-17");
+		LocalTime time = LocalTime.parse("00:00");
+		e.setId(0);
+		e.setName("Event");
+		e.setDate(date);
+		e.setTime(time);
+		e.setVenue(v);
+		e.setDescription("Description");
+		when(eventService.findById(0)).thenReturn(Optional.of(e));
+		
+
+		mvc.perform(get("/api/events/0").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(handler().methodName("getEvent")).andExpect(jsonPath("$.length()", equalTo(7)))
+				.andExpect(jsonPath("date", endsWith(date.toString())))
+				.andExpect(jsonPath("time", endsWith(time.toString())))
+				.andExpect(jsonPath("name", endsWith("Event")))
+				.andExpect(jsonPath("$._links.self.href", endsWith("/api/events/0")))
+				.andExpect(jsonPath("$._links.event.href", endsWith("/api/events/0")))
+				.andExpect(jsonPath("$._links.venue.href", endsWith("/api/events/0/venue")));
+
+		verify(eventService).findById(0);
+	}
+	@Test
+	public void getEventVenue() throws Exception {
+		
+		Event e = new Event();
+		Venue v = new Venue();
+		v.setName("Binary Bar and Grill");
+		v.setCapacity(50);
+		v.setId(0);
+		v.setRoad("5 Arundel Street");
+		v.setPostcode("M15 4JZ");
+		//v.setLongLat();
+		LocalDate date = LocalDate.parse("3022-03-17");
+		LocalTime time = LocalTime.parse("00:00");
+		e.setId(0);
+		e.setName("Event");
+		e.setDate(date);
+		e.setTime(time);
+		e.setVenue(v);
+		e.setDescription("Description");
+		when(eventService.findById(0)).thenReturn(Optional.of(e));
+		when(venueService.findById(0)).thenReturn(Optional.of(v));
+
+		mvc.perform(get("/api/events/0/venue").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(handler().methodName("getEventVenue")).andExpect(jsonPath("$.length()", equalTo(8)))
+				.andExpect(jsonPath("name", endsWith("Binary Bar and Grill")))
+				.andExpect(jsonPath("road", endsWith("5 Arundel Street")))
+				.andExpect(jsonPath("postcode", endsWith("M15 4JZ")))
+				.andExpect(jsonPath("longitude", equalTo(0.0)))
+				.andExpect(jsonPath("latitude", equalTo(0.0)))
+				.andExpect(jsonPath("capacity", equalTo(50)))
+				.andExpect(jsonPath("$._links.self.href", endsWith("/api/venues/0")))
+				.andExpect(jsonPath("$._links.venue.href", endsWith("/api/venues/0")))
+				.andExpect(jsonPath("$._links.events.href", endsWith("/api/venues/0/events")))
+				.andExpect(jsonPath("$._links.next3events.href", endsWith("/api/venues/0/next3events")))
+				;
+
+		verify(venueService).findById(0);
 	}
 }
