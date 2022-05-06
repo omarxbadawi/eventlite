@@ -3,6 +3,7 @@ package uk.ac.man.cs.eventlite.controllers;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
@@ -52,13 +53,23 @@ public class EventsControllerIntegrationTest extends AbstractTransactionalJUnit4
 
 	@Test
 	public void testGetAllEvents() {
-		client.get().uri("/events").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+		client.get().uri("/events").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+		.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+			assertThat(result.getResponseBody(), containsString("Event 1"));
+			assertThat(result.getResponseBody(), containsString("Event 2"));
+			assertThat(result.getResponseBody(), containsString("Event 3"));
+		});
 	}
 
 
 	@Test
 	public void testSearchEvents() {
-		client.get().uri("/events/search/?query=event").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+		client.get().uri("/events/search/?query=1").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+		.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+			assertThat(result.getResponseBody(), containsString("Event 1"));
+			assertThat(result.getResponseBody(), not(containsString("Event 2")));
+			assertThat(result.getResponseBody(), not(containsString("Event 3")));
+		});
 	}
 
 
@@ -74,6 +85,7 @@ public class EventsControllerIntegrationTest extends AbstractTransactionalJUnit4
 		client.get().uri("/events/4").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
 				.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
 					assertThat(result.getResponseBody(), containsString("Event 1"));
+					assertThat(result.getResponseBody(), containsString("Venue 2"));
 				});
 	}
 
@@ -84,6 +96,7 @@ public class EventsControllerIntegrationTest extends AbstractTransactionalJUnit4
 				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectBody(String.class)
 				.consumeWith(result -> {
 					assertThat(result.getResponseBody(), containsString("_csrf"));
+					assertThat(result.getResponseBody(), containsString("Add Event"));
 				});
 	}
 
@@ -187,7 +200,10 @@ public class EventsControllerIntegrationTest extends AbstractTransactionalJUnit4
 	@Test
 	public void getUpdateEvent() {
 		client.mutate().filter(basicAuthentication("Rob", "Haines")).build().get().uri("/events/update/4")
-				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+				.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+					assertThat(result.getResponseBody(), containsString("Update Event"));
+				});
 	}
 
 	@Test

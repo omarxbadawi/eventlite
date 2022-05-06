@@ -50,12 +50,20 @@ public class VenuesControllerIntegrationTest extends AbstractTransactionalJUnit4
 
 	@Test
 	public void testGetAllVenues() {
-		client.get().uri("/venues").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+		client.get().uri("/venues").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+		.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+			assertThat(result.getResponseBody(), containsString("Venue 1"));
+			assertThat(result.getResponseBody(), containsString("Venue 2"));
+			assertThat(result.getResponseBody(), containsString("Venue 3"));
+		});
 	}
 
 	@Test
 	public void testSearchVenues() {
-		client.get().uri("/venues/search/?query=venue").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+		client.get().uri("/venues/search/?query=1").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+		.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+			assertThat(result.getResponseBody(), containsString("Venue 1"));
+		});
 	}
 
 	@Test
@@ -70,6 +78,9 @@ public class VenuesControllerIntegrationTest extends AbstractTransactionalJUnit4
 		client.get().uri("/venues/1").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
 				.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
 					assertThat(result.getResponseBody(), containsString("Venue 1"));
+					assertThat(result.getResponseBody(), containsString("23 Manchester Road"));
+					assertThat(result.getResponseBody(), containsString("E14 3BD"));
+					assertThat(result.getResponseBody(), containsString("100"));
 				});
 	}
 
@@ -80,6 +91,7 @@ public class VenuesControllerIntegrationTest extends AbstractTransactionalJUnit4
 				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectBody(String.class)
 				.consumeWith(result -> {
 					assertThat(result.getResponseBody(), containsString("_csrf"));
+					assertThat(result.getResponseBody(), containsString("Add Venue"));
 				});
 	}
 
@@ -188,7 +200,10 @@ public class VenuesControllerIntegrationTest extends AbstractTransactionalJUnit4
 	@Test
 	public void getUpdateVenue() {
 		client.mutate().filter(basicAuthentication("Rob", "Haines")).build().get().uri("/venues/update/1")
-				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+				.accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+				.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+					assertThat(result.getResponseBody(), containsString("Update Venue"));
+				});
 	}
 
 	@Test

@@ -45,8 +45,15 @@ public class HomePageControllerIntegrationTest extends AbstractTransactionalJUni
     }
 
     @Test
-    public void testGetAllEvents() {
-        client.get().uri("/").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk();
+    public void testGetHomepage() {
+        client.get().uri("/").accept(MediaType.TEXT_HTML).exchange().expectStatus().isOk().expectHeader()
+		.contentTypeCompatibleWith(MediaType.TEXT_HTML).expectBody(String.class).consumeWith(result -> {
+			assertThat(result.getResponseBody(), containsString("Venue 1"));
+			assertThat(result.getResponseBody(), containsString("Venue 2"));
+			assertThat(result.getResponseBody(), containsString("Venue 3"));
+			assertThat(result.getResponseBody(), containsString("Event 1"));
+			assertThat(result.getResponseBody(), containsString("Event 3"));
+		});
     }
 
 }
