@@ -51,7 +51,7 @@
 				<label for="venue">Venue:</label><select
 					th:field="*{venue}" class="form-control">
 					<option th:each="venue : ${venues}" th:value="${venue.id}"
-						th:text="${venue.name} + ')'"></option>
+						th:text="${venue.name}"></option>
 				</select>
 			</div>
 			<a class="btn btn-primary" role="button" th:href="@{/events/{num}(num=${id})}"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</a>

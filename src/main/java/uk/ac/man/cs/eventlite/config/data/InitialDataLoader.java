@@ -38,9 +38,7 @@ public class InitialDataLoader {
 			// Build and save initial venues here.
 			Venue venue = new Venue();
 			venue.setName("Mediacity");
-			venue.setRoad("DPL Studio, University of Salford\n" +
-					"\n" +
-					"Mediacity Campus");
+			venue.setRoad("DPL Studio, University of Salford, Mediacity Campus");
 			venue.setPostcode("M50 2HE");
 			venue.setCapacity(300);
 			venue.setLongLat();
