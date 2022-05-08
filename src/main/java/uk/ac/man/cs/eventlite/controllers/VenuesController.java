@@ -15,7 +15,10 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.exceptions.EventNotFoundException;
 import uk.ac.man.cs.eventlite.exceptions.VenueNotFoundException;
 import javax.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/venues", produces = { MediaType.TEXT_HTML_VALUE })
@@ -40,6 +43,18 @@ public class VenuesController {
 
 		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		model.addAttribute("venue", venue);
+		
+		Iterable<Event> upcommingEvents = eventService.findUpcoming();
+        List<Event> upcomingVenueEvents = new ArrayList<Event>();
+        int i = 0;
+        for( Event e : upcommingEvents ){
+        	if (e.getVenue().getId() == id) {
+        		upcomingVenueEvents.add(e);
+            	i++;
+        	}   
+        	
+        }
+        model.addAttribute("events", upcomingVenueEvents);
 
 		return "venues/show";
 	}
