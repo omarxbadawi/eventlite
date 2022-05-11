@@ -25,7 +25,7 @@ import uk.ac.man.cs.eventlite.EventLite;
 @SpringBootTest(classes = EventLite.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
-public class EventsControllerApiIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class HomePageControllerApiIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	@LocalServerPort
 	private int port;
@@ -38,34 +38,11 @@ public class EventsControllerApiIntegrationTest extends AbstractTransactionalJUn
 	}
 
 	@Test
-	public void testGetAllEvents() {
-		client.get().uri("/events").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk().expectHeader()
+	public void testGetHomepage() {
+		client.get().uri("").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk().expectHeader()
 				.contentType(MediaType.APPLICATION_JSON).expectBody()
-				.jsonPath("$._links.self.href").value(endsWith("/api/events"))
-				.jsonPath("$._embedded.events.length()").value(equalTo(3));
-	}
-
-	@Test
-	public void getEventNotFound() {
-		client.get().uri("/events/99").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isNotFound().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON).expectBody()
-				.jsonPath("$.error").value(equalTo("Could not find event 99"));
-	}
-	
-	@Test
-	public void getEvent() {
-		client.get().uri("/events/4").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON).expectBody()
-				.jsonPath("$._links.self.href").value(endsWith("/api/events/4"))
-				.jsonPath("$._links.event.href").value(endsWith("/api/events/4"))
-				.jsonPath("$._links.venue.href").value(endsWith("/api/events/4/venue"))
-				.jsonPath("$.name").value(equalTo("Event 1"));
-	}
-	
-	@Test
-	public void getEventVenue() {
-		client.get().uri("/events/4/venue").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON).expectBody()
-				.jsonPath("$.name").value(equalTo("Venue 2"));
+				.jsonPath("$._links.events.href").value(endsWith("/api/events"))
+				.jsonPath("$._links.venues.href").value(endsWith("/api/venues"));
 	}
 }
+
