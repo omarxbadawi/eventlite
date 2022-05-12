@@ -38,22 +38,27 @@ public class VenuesController {
 		return "venues/not_found";
 	}
 
+	private List<Event> upcomingEventsForVenue(long id) {
+		Iterable<Event> upcomingEvents = eventService.findUpcoming();
+		List<Event> upcomingVenueEvents = new ArrayList<Event>();
+		int i = 0;
+		for(Event e : upcomingEvents){
+			if (e.getVenue().getId() == id) {
+				upcomingVenueEvents.add(e);
+				i++;
+			}
+
+		}
+		return upcomingVenueEvents;
+	}
+
 	@GetMapping("/{id}")
 	public String getVenue(@PathVariable("id") long id, Model model) {
 
 		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		model.addAttribute("venue", venue);
-		
-		Iterable<Event> upcomingEvents = eventService.findUpcoming();
-        List<Event> upcomingVenueEvents = new ArrayList<Event>();
-        int i = 0;
-        for(Event e : upcomingEvents){
-        	if (e.getVenue().getId() == id) {
-        		upcomingVenueEvents.add(e);
-            	i++;
-        	}   
-        	
-        }
+		List<Event> upcomingVenueEvents = upcomingEventsForVenue(id);
+
         model.addAttribute("events", upcomingVenueEvents);
 
 		return "venues/show";
@@ -86,6 +91,8 @@ public class VenuesController {
 			return "redirect:/venues";
 		}
 		model.addAttribute("venue", venue);
+		List<Event> upcomingVenueEvents = upcomingEventsForVenue(id);
+		model.addAttribute("events", upcomingVenueEvents);
 		return "venues/show";
 	}
 

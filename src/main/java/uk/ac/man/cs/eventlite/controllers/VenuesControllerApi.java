@@ -1,6 +1,8 @@
 package uk.ac.man.cs.eventlite.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -76,12 +78,11 @@ public class VenuesControllerApi {
 	@GetMapping("/{id}/next3events")
 	public CollectionModel<EntityModel<Event>> getVenueNext3Events(@PathVariable("id") long id) {
 		ArrayList<Event> events = new ArrayList<Event>();
-		for(Event event : eventService.findUpcoming()) {
-			if(event.getVenue().getId() == id) {
-				events.add(event);
-				if(events.size() == 3) {
-					break;
-				}
+		List<Event> upcomingEvents = new ArrayList<>();
+		eventService.findUpcoming().forEach(upcomingEvents::add);
+		for (int i = 0; i < Math.min(upcomingEvents.size(), 3); i++) {
+			if(upcomingEvents.get(i).getVenue().getId() == id) {
+				events.add(upcomingEvents.get(i));
 			}
 		}
 		return eventAssembler.toCollectionModel(events)
