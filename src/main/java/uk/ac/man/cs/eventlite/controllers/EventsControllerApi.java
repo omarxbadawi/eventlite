@@ -69,7 +69,7 @@ public class EventsControllerApi {
 	@GetMapping("/{id}/venue")
 	public EntityModel<Venue> getEventVenue(@PathVariable("id") long id) {
 		Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
-		Venue greeting = venueService.findById(event.getVenue().getId()).orElseThrow(() -> new VenueNotFoundException(id));
+		Venue greeting = venueService.findById(event.getVenue().getId()).get();
 		return venueAssembler.toModel(greeting);
 	}
 
