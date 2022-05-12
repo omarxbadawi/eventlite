@@ -107,6 +107,9 @@ public class VenuesControllerTest {
     @Test
     public void getVenueFound() throws Exception {
 
+        when(event.getVenue()).thenReturn(venue);
+        when(event.getId()).thenReturn(1L);
+        when(eventService.findUpcoming()).thenReturn(Collections.<Event>singletonList(event));
         when(venueService.findById(1)).thenReturn(Optional.of(venue));
         mvc.perform(get("/venues/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
                 .andExpect(view().name("venues/show")).andExpect(handler().methodName("getVenue"));

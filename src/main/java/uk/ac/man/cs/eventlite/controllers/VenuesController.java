@@ -44,10 +44,10 @@ public class VenuesController {
 		Venue venue = venueService.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
 		model.addAttribute("venue", venue);
 		
-		Iterable<Event> upcommingEvents = eventService.findUpcoming();
+		Iterable<Event> upcomingEvents = eventService.findUpcoming();
         List<Event> upcomingVenueEvents = new ArrayList<Event>();
         int i = 0;
-        for( Event e : upcommingEvents ){
+        for(Event e : upcomingEvents){
         	if (e.getVenue().getId() == id) {
         		upcomingVenueEvents.add(e);
             	i++;
